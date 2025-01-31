@@ -1,5 +1,5 @@
-@import "../../assets/scss/colors.scss";
-@import "../../assets/scss/mixins.scss";
+@import "../../../assets/scss/colors.scss";
+@import "../../../assets/scss/mixins.scss";
 
 .navbar {
   @include grid(70% 30%, 1fr, initial);
@@ -14,12 +14,12 @@
 }
 
 .search-and-login {
-  @include flexBox(center, initial, 3.2rem);
+  @include flexBox(row, center, initial, 3.2rem);
   height: 40px;
   width: 100%;
 }
 .search {
-  @include flexBox(center, initial, 5px);
+  @include flexBox(row, center, initial, 5px);
   border: 1px solid $off-white;
   padding: 8px;
   width: 70%;
@@ -38,8 +38,8 @@
       outline: none;
     }
   }
-  svg {
-    fill: $off-white;
+  .search-icon {
+    color: $off-white;
   }
 }
 

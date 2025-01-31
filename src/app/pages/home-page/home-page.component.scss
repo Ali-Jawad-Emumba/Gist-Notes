@@ -1,0 +1,45 @@
+@import "../../../assets/scss/mixins.scss";
+@import "../../../assets/scss/colors.scss";
+.home-page {
+  @include flexBox(column, initial, initial, 1rem);
+}
+
+.public-gist-header {
+  @include flexBox(row, center, space-between, 0);
+}
+
+.public-gist-heading {
+  font-family: "Inter-Regular";
+  font-size: 2.5rem;
+  color: $heading-gray;
+  font-weight: 400;
+}
+
+.view-layout-icons {
+  @include flexBox(row, initial, initial, 0);
+  border: 1px solid $light-gray;
+  border-radius: 4px;
+}
+.icon-wrapper {
+  @include flexBox(row, center, center, 0);
+  padding: 8px 12px;
+  &:hover {
+    cursor: pointer;
+  }
+}
+
+.icon {
+  fill: $icon-gray;
+  path {
+    fill: $icon-gray;
+  }
+}
+.selectedIcon {
+  background-color: $icon-gray;
+  .icon {
+    color: $primary-color;
+    path {
+      fill: $primary-color;
+    }
+  }
+}

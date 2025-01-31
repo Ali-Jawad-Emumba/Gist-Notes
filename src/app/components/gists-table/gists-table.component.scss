@@ -1,0 +1,15 @@
+@import "../../../assets/scss/colors.scss";
+
+.table {
+  width: 100%;
+  border: 1px solid $light-gray;
+  border-radius: 4px;
+  th {
+    background-color: $table-row-gray;
+    font-family: "Inter-Bold";
+  }
+}
+
+.pagination {
+  background-color: $table-row-gray;
+}
