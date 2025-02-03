@@ -1,4 +1,5 @@
 @import "../../../assets/scss/colors.scss";
+@import "../../../assets/scss/mixins.scss";
 
 .table {
   width: 100%;
@@ -7,6 +8,30 @@
   th {
     background-color: $table-row-gray;
     font-family: "Inter-Bold";
+  }
+  td {
+    .avatar-and-name {
+      @include flexBox(row, center, initial, 10px);
+      .owner-avatar {
+        width: 30px;
+        border-radius: 50%;
+      }
+    }
+    height: 70px;
+
+    .keyword {
+      @include flexBox(row, initial, center, 0);
+      background-color: $primary-color;
+      border-radius: 40px;
+      color: $white;
+      padding: 8px 16px;
+      width: 100px;
+      font-weight: bold;
+    }
+
+    .actions {
+      @include flexBox(row, center, center, 5px);
+    }
   }
 }
 

@@ -1,12 +1,11 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { GistsTableComponent } from './gists-table/gists-table.component';
-import { MatPaginatorModule } from '@angular/material/paginator';
-import { MatTableModule } from '@angular/material/table';
+import { GistCardComponent } from './gist-card/gist-card.component';
+import { MatCardModule } from '@angular/material/card';
 
 @NgModule({
-  declarations: [GistsTableComponent],
-  imports: [CommonModule, MatPaginatorModule, MatTableModule],
-  exports: [GistsTableComponent],
+  declarations: [GistCardComponent],
+  imports: [CommonModule],
+  exports: [GistCardComponent],
 })
 export class SharedModule {}
