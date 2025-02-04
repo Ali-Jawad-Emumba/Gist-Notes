@@ -19,7 +19,7 @@ import { HttpClientModule } from '@angular/common/http';
     AppComponent,
     NavbarComponent,
     HomePageComponent,
-    GistsTableComponent
+    GistsTableComponent,
   ],
   imports: [
     BrowserModule,
@@ -30,7 +30,7 @@ import { HttpClientModule } from '@angular/common/http';
     SharedModule,
     MatPaginatorModule,
     MatTableModule,
-    HttpClientModule
+    HttpClientModule,
   ],
   providers: [],
   bootstrap: [AppComponent],

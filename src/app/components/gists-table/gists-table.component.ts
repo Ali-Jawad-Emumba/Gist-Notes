@@ -33,22 +33,24 @@ export class GistsTableComponent implements OnInit, AfterViewInit, OnDestroy {
   dataSource!: any;
   private subscription!: Subscription;
 
+  constructor() {}
+
   @ViewChild(MatPaginator) paginator: MatPaginator | any;
 
   ngOnInit(): void {
-    this.subscription = this.publicGists$.subscribe((val: any) => {
-      console.log('raw data: ', val[0]);
-      this.tableData = val.map((e: any) => ({
-        name: { name: e.owner.login, avatar: e.owner.avatar_url },
-        notebookName: 'Notebook Name',
-        keyword: 'Keyword',
-        updated: dayjs(e.updated_at).fromNow(),
-      }));
-    });
+    this.subscription = this.publicGists$.subscribe(
+      (val: any) =>
+        (this.tableData = val.map((e: any) => ({
+          name: { name: e.owner.login, avatar: e.owner.avatar_url },
+          notebookName: 'Notebook Name',
+          keyword: 'Keyword',
+          updated: dayjs(e.updated_at).fromNow(),
+        })))
+    );
   }
 
   ngAfterViewInit() {
-    console.log(this.tableData)
+
     this.dataSource = new MatTableDataSource<TableColumns>(this.tableData);
     this.dataSource.paginator = this.paginator;
 

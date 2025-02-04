@@ -1,0 +1,50 @@
+@import "../../../assets/scss/mixins.scss";
+@import "../../../assets/scss/colors.scss";
+
+.cards-wrapper {
+  @include flexBox(initial, initial, space-between, 15px);
+  width: 100%;
+  flex-wrap: wrap;
+  .card {
+    @include flexBox(column, initial, initial, 10px);
+    width: 30%;
+    border: 1px solid $table-row-gray;
+    border-radius: 4px;
+    .json {
+      height: 182px;
+      background-color: $card-background-gray;
+      padding: 8px;
+      code {
+        font-size: 1.1rem;
+        font-family: "Inter-Regular";
+        line-height: 15px
+      }
+    }
+    .gist-description {
+      @include grid(30px 1fr, 1fr, 15px);
+      padding: 8px;
+      height: 80px;
+      width: 100%;
+      box-sizing: border-box;
+      overflow: hidden;
+
+      .avatar {
+        width: 35px;
+        aspect-ratio: 1;
+        border-radius: 100%;
+      }
+      .author-and-gist-name {
+        font-family: "Inter-Regular";
+        color: $card-font-blue;
+        font-size: 1.4rem;
+        margin-top: 0;
+      }
+      .sub-description {
+        font-family: "Inter-Regular";
+        font-size: 1.1rem;
+        color: $card-font-gray;
+        margin: 0 0 5px 0;
+      }
+    }
+  }
+}

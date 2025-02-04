@@ -1,9 +1,22 @@
-<div>
-  <div class="gist"></div>
-  <div class="gist-description">
-    <img src="" alt="" />
-    <div class="gist-author-and-detail">
-      <p>/ <strong></strong></p>
+<div class="cards-wrapper">
+  <div class="card" *ngFor="let card of cards">
+    <div class="json">
+      <pre
+        #jsonBlock
+        class="line-numbers"
+      ><code class="language-json">{{jsonData | json}}</code></pre>
+    </div>
+    <div class="gist-description">
+      <img class="avatar" [src]="card.avatar" alt="" />
+      <div>
+        <p class="author-and-gist-name">
+          {{ card.name }} / <strong>{{ card.gistName | truncate : 20 }}</strong>
+        </p>
+        <p class="sub-description">Created {{ card.created }}</p>
+        <p class="sub-description">
+          {{ card.description | truncate : 40 }}
+        </p>
+      </div>
     </div>
   </div>
 </div>
