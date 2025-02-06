@@ -4,13 +4,14 @@
       <pre
         #jsonBlock
         class="line-numbers"
-      ><code class="language-json">{{jsonData | json}}</code></pre>
+      ><code class="language-csv">{{card.json}}</code></pre>
     </div>
     <div class="gist-description">
       <img class="avatar" [src]="card.avatar" alt="" />
       <div>
         <p class="author-and-gist-name">
-          {{ card.name }} / <strong>{{ card.gistName | truncate : 20 }}</strong>
+          {{ card.name | truncate : 16 }} /
+          <strong>{{ card.gistName | truncate : 16 }}</strong>
         </p>
         <p class="sub-description">Created {{ card.created }}</p>
         <p class="sub-description">

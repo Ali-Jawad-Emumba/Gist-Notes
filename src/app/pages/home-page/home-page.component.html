@@ -58,10 +58,14 @@
       </div>
     </div>
   </div>
-  <div>
-    <div class="loader" *ngIf="loading"></div>
-    <ng-template
-      *ngComponentOutlet="currentView; inputs: dynamicInputs"
-    ></ng-template>
+  <div *ngIf="publicGists" [ngSwitch]="viewType">
+    <app-gists-table
+      *ngSwitchCase="'list'"
+      [publicGists]="publicGists"
+    ></app-gists-table>
+    <app-gist-card
+      *ngSwitchCase="'card'"
+      [publicGists]="publicGists"
+    ></app-gist-card>
   </div>
 </div>

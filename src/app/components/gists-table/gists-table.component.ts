@@ -1,5 +1,4 @@
 import {
-  AfterViewChecked,
   AfterViewInit,
   Component,
   Input,
@@ -9,7 +8,6 @@ import {
 } from '@angular/core';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatTableDataSource } from '@angular/material/table';
-import { Subscribable, Subscription } from 'rxjs';
 import { TableColumns } from '../../utils/interfaces';
 import dayjs from 'dayjs';
 import relativeTime from 'dayjs/plugin/relativeTime';
@@ -21,8 +19,8 @@ dayjs.extend(relativeTime);
   styleUrl: './gists-table.component.scss',
 })
 export class GistsTableComponent implements OnInit, AfterViewInit, OnDestroy {
-  tableData!: TableColumns[];
-  @Input() publicGists$!: any;
+  tableData: TableColumns[] = [];
+  @Input({ required: true }) publicGists!: any[];
   displayedColumns: string[] = [
     'name',
     'notebookName',
@@ -31,26 +29,21 @@ export class GistsTableComponent implements OnInit, AfterViewInit, OnDestroy {
     'action',
   ];
   dataSource!: any;
-  private subscription!: Subscription;
 
   constructor() {}
 
   @ViewChild(MatPaginator) paginator: MatPaginator | any;
 
   ngOnInit(): void {
-    this.subscription = this.publicGists$.subscribe(
-      (val: any) =>
-        (this.tableData = val.map((e: any) => ({
-          name: { name: e.owner.login, avatar: e.owner.avatar_url },
-          notebookName: 'Notebook Name',
-          keyword: 'Keyword',
-          updated: dayjs(e.updated_at).fromNow(),
-        })))
-    );
+      this.tableData = this.publicGists.map((e: any) => ({
+        name: { name: e.owner.login, avatar: e.owner.avatar_url },
+        notebookName: 'Notebook Name',
+        keyword: 'Keyword',
+        updated: dayjs(e.updated_at).fromNow(),
+      }));
   }
 
   ngAfterViewInit() {
-
     this.dataSource = new MatTableDataSource<TableColumns>(this.tableData);
     this.dataSource.paginator = this.paginator;
 
@@ -60,7 +53,5 @@ export class GistsTableComponent implements OnInit, AfterViewInit, OnDestroy {
     paginatorIntl.previousPageLabel = '';
   }
 
-  ngOnDestroy(): void {
-    this.subscription.unsubscribe();
-  }
+  ngOnDestroy(): void {}
 }

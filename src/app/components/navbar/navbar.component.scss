@@ -17,6 +17,11 @@
   @include flexBox(row, center, initial, 3.2rem);
   height: 40px;
   width: 100%;
+  .user-avatar {
+    width: 35px;
+    aspect-ratio: 1;
+    border-radius: 50%;
+  }
 }
 .search {
   @include flexBox(row, center, initial, 5px);

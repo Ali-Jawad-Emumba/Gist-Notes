@@ -7,6 +7,9 @@
       <mat-icon class="search-icon">search</mat-icon>
       <input type="text" placeholder="Search" />
     </div>
-    <button class="login-button">Login</button>
+    <button *ngIf="!user" class="login-button" (click)="signInWithGitHub()">
+      Login
+    </button>
+    <img *ngIf="user" class="user-avatar" [src]="user.photoURL" />
   </div>
 </div>
