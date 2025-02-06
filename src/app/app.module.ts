@@ -13,6 +13,8 @@ import { GistsTableComponent } from './components/gists-table/gists-table.compon
 import { MatPaginatorModule } from '@angular/material/paginator';
 import { MatTableModule } from '@angular/material/table';
 import { HttpClientModule } from '@angular/common/http';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 
 @NgModule({
   declarations: [
@@ -30,7 +32,7 @@ import { HttpClientModule } from '@angular/common/http';
     SharedModule,
     MatPaginatorModule,
     MatTableModule,
-    HttpClientModule,
+    HttpClientModule
   ],
   providers: [],
   bootstrap: [AppComponent],
