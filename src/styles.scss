@@ -60,3 +60,30 @@ body {
     transform: rotate(360deg);
   }
 }
+
+.gist-description {
+  @include grid(30px 1fr, 1fr, 15px);
+  padding: 8px;
+  height: 80px;
+  width: 100%;
+  box-sizing: border-box;
+  overflow: hidden;
+
+  .avatar {
+    width: 35px;
+    aspect-ratio: 1;
+    border-radius: 100%;
+  }
+  .author-and-gist-name {
+    font-family: "Inter-Regular";
+    color: $card-font-blue;
+    font-size: 1.4rem;
+    margin-top: 0;
+  }
+  .sub-description {
+    font-family: "Inter-Regular";
+    font-size: 1.1rem;
+    color: $card-font-gray;
+    margin: 0 0 5px 0;
+  }
+}

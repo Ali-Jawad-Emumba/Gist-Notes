@@ -11,51 +11,57 @@
   box-sizing: border-box;
   position: sticky;
   top: 0;
+
+  .emumba-logo {
+    &:hover {
+      cursor: pointer;
+    }
+  }
 }
 
 .search-and-login {
   @include flexBox(row, center, initial, 3.2rem);
   height: 40px;
   width: 100%;
+  .login-button {
+    height: 100%;
+    background-color: $white;
+    border: none;
+    padding: 8px 32px;
+    box-sizing: border-box;
+    border-radius: 4px;
+    font-family: "Inter-SemiBold";
+    font-size: 1.4rem;
+    color: $primary-color;
+  }
+
   .user-avatar {
     width: 35px;
     aspect-ratio: 1;
     border-radius: 50%;
   }
-}
-.search {
-  @include flexBox(row, center, initial, 5px);
-  border: 1px solid $off-white;
-  padding: 8px;
-  width: 70%;
-  border-radius: 4px;
-  input {
-    background-color: $no-color;
-    border: none;
-    width: 80%;
-    color: $white;
-    &::placeholder {
+  .search {
+    @include flexBox(row, center, initial, 5px);
+    border: 1px solid $off-white;
+    padding: 8px;
+    width: 70%;
+    border-radius: 4px;
+    input {
+      background-color: $no-color;
+      border: none;
+      width: 80%;
+      color: $white;
+      &::placeholder {
+        color: $off-white;
+        font-family: "Inter-Regular";
+        font-size: 1.4rem;
+      }
+      &:focus {
+        outline: none;
+      }
+    }
+    .search-icon {
       color: $off-white;
-      font-family: "Inter-Regular";
-      font-size: 1.4rem;
-    }
-    &:focus {
-      outline: none;
     }
   }
-  .search-icon {
-    color: $off-white;
-  }
-}
-
-.login-button {
-  height: 100%;
-  background-color: $white;
-  border: none;
-  padding: 8px 32px;
-  box-sizing: border-box;
-  border-radius: 4px;
-  font-family: "Inter-SemiBold";
-  font-size: 1.4rem;
-  color: $primary-color;
 }

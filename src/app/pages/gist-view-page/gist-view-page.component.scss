@@ -1,0 +1,12 @@
+@import "../../../assets/scss/mixins.scss";
+@import "../../../assets/scss/colors.scss";
+
+.gist-view {
+  @include flexBox(column, initial, initial, 10px);
+  .code-preview {
+    width: 100%;
+    height: 450px;
+    background-color: $card-background-gray;
+    border-radius: 20px;
+  }
+}

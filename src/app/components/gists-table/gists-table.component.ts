@@ -11,6 +11,7 @@ import { MatTableDataSource } from '@angular/material/table';
 import { TableColumns } from '../../utils/interfaces';
 import dayjs from 'dayjs';
 import relativeTime from 'dayjs/plugin/relativeTime';
+import { SharedService } from '../../utils/services/shared.service';
 dayjs.extend(relativeTime);
 
 @Component({
@@ -30,14 +31,14 @@ export class GistsTableComponent implements OnInit, AfterViewInit, OnDestroy {
   ];
   dataSource!: any;
 
-  constructor() {}
+  constructor(public sharedService:SharedService) {}
 
   @ViewChild(MatPaginator) paginator: MatPaginator | any;
 
   ngOnInit(): void {
       this.tableData = this.publicGists.map((e: any) => ({
         name: { name: e.owner.login, avatar: e.owner.avatar_url },
-        notebookName: 'Notebook Name',
+        notebookName: Object.keys(e.files)[0],
         keyword: 'Keyword',
         updated: dayjs(e.updated_at).fromNow(),
       }));

@@ -1,5 +1,9 @@
 <div class="cards-wrapper">
-  <div class="card" *ngFor="let card of cards">
+  <div
+    class="card"
+    *ngFor="let card of cards"
+    (click)="openGistView(card)"
+  >
     <div class="json">
       <pre
         #jsonBlock

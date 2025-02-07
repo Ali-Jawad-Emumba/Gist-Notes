@@ -1,12 +1,9 @@
-import {
-  Component,
-  Input,
-  OnDestroy,
-  OnInit,
-} from '@angular/core';
+import { Component, Input, OnDestroy, OnInit } from '@angular/core';
 import dayjs from 'dayjs';
 import { Subscription } from 'rxjs';
 import { HttpService } from '../../utils/services/http.service';
+import { Router } from '@angular/router';
+import { SharedService } from '../../utils/services/shared.service';
 
 @Component({
   selector: 'app-gist-card',
@@ -19,9 +16,18 @@ export class GistCardComponent implements OnInit, OnDestroy {
   private subscription!: Subscription;
   private subSubscriptions: Subscription[] = [];
 
-  constructor(private httpService: HttpService) {}
+  constructor(
+    private httpService: HttpService,
+    public sharedService: SharedService,
+    private router: Router
+  ) {}
   jsonData = { name: 'Ali', age: 25, skills: ['Angular', 'React'] };
 
+  openGistView(card: any) {
+    this.sharedService.openedGistCard.next(card);
+    this.router.navigate([`/gist/${card.name}`]);
+  }
+  
   ngOnInit(): void {
     if (this.publicGists)
       this.cards = this.publicGists.map((e: any) => {

@@ -2,6 +2,7 @@ import { Component, OnDestroy, OnInit } from '@angular/core';
 import { HttpService } from '../../utils/services/http.service';
 import { GistsTableComponent } from '../../components/gists-table/gists-table.component';
 import { Subscription } from 'rxjs';
+import { SharedService } from '../../utils/services/shared.service';
 
 @Component({
   selector: 'app-home-page',
@@ -13,22 +14,30 @@ export class HomePageComponent implements OnInit, OnDestroy {
   currentView: any = GistsTableComponent;
   dynamicInputs!: any;
   loading: boolean = false;
-  subscription!: Subscription;
+  subscriptions: Subscription[] = [];
   publicGists!: any;
 
-  constructor(private httpService: HttpService) {}
+  constructor(
+    private httpService: HttpService,
+    private sharedService: SharedService
+  ) {}
 
   selectView = (view: string) => {
-    this.viewType = view;
+    this.sharedService.selectedGistView.next(view);
   };
 
   ngOnInit(): void {
-    this.subscription = this.httpService
+    const publicGistSubscription = this.httpService
       .getPublicGists()
       .subscribe((val: any) => (this.publicGists = val));
+    const selectedViewSubscription =
+      this.sharedService.selectedGistView.subscribe(
+        (val: string) => (this.viewType = val)
+      );
+    this.subscriptions.push(publicGistSubscription, selectedViewSubscription);
   }
 
   ngOnDestroy(): void {
-    this.subscription.unsubscribe();
+    this.subscriptions.forEach((subscription) => subscription.unsubscribe());
   }
 }

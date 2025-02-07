@@ -8,7 +8,7 @@ import {
 } from 'firebase/auth';
 import { initializeApp } from 'firebase/app';
 import { environment } from '../../../environments/environment';
-import { StateService } from '../../utils/services/state.service';
+import { SharedService } from '../../utils/services/shared.service';
 
 @Component({
   selector: 'app-navbar',
@@ -19,11 +19,11 @@ export class NavbarComponent {
   user: User | null = null;
   private auth!: any;
 
-  constructor(private stateService: StateService) {}
+  constructor(private sharedService: SharedService) {}
 
   setupUser(user: User | null) {
     this.user = user;
-    this.stateService.user.next(user);
+    this.sharedService.user.next(user);
   }
   ngOnInit(): void {
     this.auth = getAuth(initializeApp(environment.firebaseConfig));
