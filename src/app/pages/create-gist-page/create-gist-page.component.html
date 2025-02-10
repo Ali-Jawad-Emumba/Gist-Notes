@@ -1,0 +1,40 @@
+<div class="main-div">
+  <h1 class="heading">Create Gist</h1>
+  <div class="form-wrapper">
+    <form class="form" [formGroup]="gistForm" (ngSubmit)="onSubmit()">
+      <input
+        type="text"
+        class="input description-input"
+        placeholder="Gist Description"
+        formControlName="description"
+      />
+      <div formArrayName="files">
+        <div
+          class="file-wrapper"
+          *ngFor="let file of files.controls; let i = index"
+          [formGroupName]="i"
+        >
+          <div class="input-and-delete">
+            <input
+              type="text"
+              placeholder="Filename with extension"
+              formControlName="filename"
+            />
+            <img
+              *ngIf="showDeleteIcon(i)"
+              src="../../../assets/images/Bin Icon.svg"
+              alt=""
+              class="delete-icon"
+              (click)="deleteFile(i)"
+            />
+          </div>
+          <div #editor class="coding-space"></div>
+        </div>
+      </div>
+      <div class="action-btns">
+        <button class="btn secondary-btn" (click)="addFile()">Add File</button>
+        <button class="btn primary-btn">Create Gist</button>
+      </div>
+    </form>
+  </div>
+</div>

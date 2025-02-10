@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, HostListener } from '@angular/core';
 import {
   getAuth,
   GithubAuthProvider,
@@ -18,12 +18,28 @@ import { SharedService } from '../../utils/services/shared.service';
 export class NavbarComponent {
   user: User | null = null;
   private auth!: any;
-
+  showMenu: boolean = false;
   constructor(private sharedService: SharedService) {}
 
+  toggleShowMenu() {
+    this.showMenu = !this.showMenu;
+  }
   setupUser(user: User | null) {
     this.user = user;
     this.sharedService.user.next(user);
+  }
+
+  @HostListener('document:click', ['$event'])
+  onClickOutside(event: Event) {
+    const target = event.target as HTMLElement;
+
+    if (!target.closest('.menu') && !target.closest('.user-avatar')) {
+      this.showMenu = false;
+    }
+
+    if (target.closest('.menu li')) {
+      this.showMenu = false;
+    }
   }
   ngOnInit(): void {
     this.auth = getAuth(initializeApp(environment.firebaseConfig));

@@ -18,11 +18,17 @@
       height: 182px;
       background-color: $card-background-gray;
       padding: 8px;
+      overflow: hidden;
       code {
         font-size: 1.1rem;
-        font-family: "Inter-Regular";
         line-height: 15px;
       }
     }
   }
+}
+
+.next-previous {
+  @include flexBox(row, center, space-between, 0);
+  width: 100%;
+  margin-top: 10px;
 }

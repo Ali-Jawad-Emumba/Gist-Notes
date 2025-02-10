@@ -13,8 +13,8 @@ export class HomePageComponent implements OnInit, OnDestroy {
   viewType: string = 'list';
   currentView: any = GistsTableComponent;
   dynamicInputs!: any;
-  loading: boolean = false;
-  subscriptions: Subscription[] = [];
+  loading: boolean = true;
+  subscription!: Subscription;
   publicGists!: any;
 
   constructor(
@@ -26,18 +26,17 @@ export class HomePageComponent implements OnInit, OnDestroy {
     this.sharedService.selectedGistView.next(view);
   };
 
-  ngOnInit(): void {
-    const publicGistSubscription = this.httpService
-      .getPublicGists()
-      .subscribe((val: any) => (this.publicGists = val));
-    const selectedViewSubscription =
-      this.sharedService.selectedGistView.subscribe(
-        (val: string) => (this.viewType = val)
-      );
-    this.subscriptions.push(publicGistSubscription, selectedViewSubscription);
+  async ngOnInit(): Promise<void> {
+    const publicGist = await this.httpService.getPublicGists().toPromise();
+
+    this.publicGists = publicGist;
+
+    this.subscription = this.sharedService.selectedGistView.subscribe(
+      (val: string) => (this.viewType = val)
+    );
   }
 
   ngOnDestroy(): void {
-    this.subscriptions.forEach((subscription) => subscription.unsubscribe());
+    this.subscription.unsubscribe();
   }
 }

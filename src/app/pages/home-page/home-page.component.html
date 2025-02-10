@@ -58,7 +58,7 @@
       </div>
     </div>
   </div>
-  <div *ngIf="publicGists" [ngSwitch]="viewType">
+  <div [ngSwitch]="viewType" *ngIf="publicGists">
     <app-gists-table
       *ngSwitchCase="'list'"
       [publicGists]="publicGists"

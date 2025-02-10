@@ -40,7 +40,7 @@
       <th mat-header-cell *matHeaderCellDef></th>
       <td mat-cell *matCellDef="let element">
         <div class="actions">
-          <svg
+          <a [href]="element.forksURL" target="_blank"><svg
             width="20"
             height="20"
             viewBox="0 0 20 20"
@@ -54,6 +54,7 @@
               fill="#003B44"
             />
           </svg>
+        </a>
           <svg
             width="20"
             height="20"

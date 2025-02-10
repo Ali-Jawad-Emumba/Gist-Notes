@@ -41,6 +41,7 @@ export class GistsTableComponent implements OnInit, AfterViewInit, OnDestroy {
         notebookName: Object.keys(e.files)[0],
         keyword: 'Keyword',
         updated: dayjs(e.updated_at).fromNow(),
+        forksURL: e.forks_url
       }));
   }
 

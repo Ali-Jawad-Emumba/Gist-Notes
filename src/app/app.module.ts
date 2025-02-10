@@ -13,6 +13,9 @@ import { MatPaginatorModule } from '@angular/material/paginator';
 import { HttpClientModule } from '@angular/common/http';
 import { GistViewPageComponent } from './pages/gist-view-page/gist-view-page.component';
 import { MatTableModule } from '@angular/material/table';
+import { MatMenuModule } from '@angular/material/menu';
+import { CreateGistPageComponent } from './pages/create-gist-page/create-gist-page.component';
+import { ReactiveFormsModule } from '@angular/forms';
 
 @NgModule({
   declarations: [
@@ -21,6 +24,7 @@ import { MatTableModule } from '@angular/material/table';
     HomePageComponent,
     GistsTableComponent,
     GistViewPageComponent,
+    CreateGistPageComponent,
   ],
   imports: [
     BrowserModule,
@@ -32,6 +36,8 @@ import { MatTableModule } from '@angular/material/table';
     MatPaginatorModule,
     MatTableModule,
     HttpClientModule,
+    MatMenuModule,
+    ReactiveFormsModule,
   ],
   providers: [],
   bootstrap: [AppComponent],

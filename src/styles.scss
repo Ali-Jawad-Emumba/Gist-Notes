@@ -87,3 +87,46 @@ body {
     margin: 0 0 5px 0;
   }
 }
+
+.btn {
+  padding: 8px 32px;
+  border: none;
+  border-radius: 4px;
+  font-family: "Inter-Bold";
+  font-size: 1.4rem;
+  &:hover {
+    cursor: pointer;
+  }
+}
+.secondary-btn {
+  background-color: $table-row-gray;
+  color: $primary-color;
+}
+.primary-btn {
+  background-color: $primary-color;
+  color: $white;
+}
+
+code {
+  font-family: "Inter-Regular";
+}
+
+// .line-numbers {
+//   counter-reset: line;
+//   position: relative;
+//   overflow-x: auto;
+
+//   code {
+//     display: block;
+//     padding-left: 2.5em; /* Space for line numbers */
+//     &:before {
+//       content: counter(line) " ";
+//       counter-increment: line;
+//       position: absolute;
+//       left: 0;
+//       top: 0;
+//       padding-right: 10px;
+//       color: #888; /* Light grey for numbers */
+//     }
+//   }
+// }

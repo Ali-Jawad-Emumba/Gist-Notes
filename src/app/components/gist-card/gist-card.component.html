@@ -1,14 +1,7 @@
-<div class="cards-wrapper">
-  <div
-    class="card"
-    *ngFor="let card of cards"
-    (click)="openGistView(card)"
-  >
+<div class="cards-wrapper" *ngIf="cards">
+  <div class="card" *ngFor="let card of cards" (click)="openGistView(card)">
     <div class="json">
-      <pre
-        #jsonBlock
-        class="line-numbers"
-      ><code class="language-csv">{{card.json}}</code></pre>
+      <pre class="line-numbers"><code>{{card.json}}</code></pre>
     </div>
     <div class="gist-description">
       <img class="avatar" [src]="card.avatar" alt="" />
@@ -25,3 +18,19 @@
     </div>
   </div>
 </div>
+
+<div class="loader" *ngIf="loading"></div>
+<!-- <div class="next-previous">
+  <button
+    class="btn secondary-btn"
+    (click)="previousPage()"
+  >
+    Previous
+  </button>
+  <button
+    class="btn primary-btn"
+    (click)="nextPage()"
+  >
+    Next
+  </button>
+</div> -->
