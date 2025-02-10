@@ -25,7 +25,7 @@ import { HttpService } from '../../utils/services/http.service';
 })
 export class CreateGistPageComponent implements OnInit, AfterViewInit {
   constructor(private fb: FormBuilder, private httpService: HttpService) {}
-
+  errorMessage = { show: false, message: '', nature: '' };
   gistForm!: FormGroup;
   private editors: ace.Ace.Editor[] = [];
 
@@ -75,10 +75,22 @@ export class CreateGistPageComponent implements OnInit, AfterViewInit {
     gist.files = files;
     this.httpService.postGist(gist).subscribe(
       (response) => {
-        console.log('Gist posted successfully:', response); // Log the success response
+        this.gistForm.get('files')?.setValue([]);
+        this.addFile();
+        this.errorMessage = {
+          show: true,
+          message: 'Gist created Successfully',
+          nature: 'success',
+        };
+        setTimeout(() => (this.errorMessage.show = false), 1000);
       },
       (error) => {
-        console.error('Error posting gist:', error); // Log the error if something goes wrong
+        this.errorMessage = {
+          show: true,
+          message: 'Failed to create a gist',
+          nature: 'fail',
+        };
+        setTimeout(() => (this.errorMessage.show = false), 1000);
       }
     );
   };

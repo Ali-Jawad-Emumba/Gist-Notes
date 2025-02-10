@@ -31,4 +31,14 @@ export class HttpService {
 
   postGist = (gist: any) =>
     this.http.post(`${this.BASE_URL}/gists`, gist, { headers: this.headers });
+
+  forkGist = (body: any) =>
+    this.http.post(`${this.BASE_URL}/gists/${body.gistId}/forks`, body, {
+      headers: this.headers,
+    });
+
+  starGist = (body: any) =>
+    this.http.put(`${this.BASE_URL}/gists/${body.gistId}/star`, body, {
+      headers: this.headers,
+    });
 }

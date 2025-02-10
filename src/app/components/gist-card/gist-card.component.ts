@@ -43,7 +43,6 @@ export class GistCardComponent implements OnInit {
         .getGistCodePreview(e.files[gistName].raw_url)
         .toPromise();
       jsonData = json;
-
       return {
         json: jsonData,
         avatar: e.owner.avatar_url,
@@ -51,6 +50,8 @@ export class GistCardComponent implements OnInit {
         gistName,
         created: dayjs(e.created_at).fromNow(),
         description: e.description,
+        gistId: e.id,
+        forksURL:e.forks_url
       };
     });
 
