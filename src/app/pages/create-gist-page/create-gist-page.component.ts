@@ -4,6 +4,7 @@ import {
   OnInit,
   ViewChildren,
   AfterViewInit,
+  contentChild,
 } from '@angular/core';
 import {
   FormArray,
@@ -15,6 +16,7 @@ import {
 import * as ace from 'ace-builds'; // Import Ace Editor
 import 'ace-builds/src-noconflict/mode-javascript'; // Import mode for JavaScript (or any other language)
 import 'ace-builds/src-noconflict/theme-chrome'; // Import theme (optional)
+import { HttpService } from '../../utils/services/http.service';
 
 @Component({
   selector: 'app-create-gist-page',
@@ -22,7 +24,7 @@ import 'ace-builds/src-noconflict/theme-chrome'; // Import theme (optional)
   styleUrls: ['./create-gist-page.component.scss'],
 })
 export class CreateGistPageComponent implements OnInit, AfterViewInit {
-  constructor(private fb: FormBuilder) {}
+  constructor(private fb: FormBuilder, private httpService: HttpService) {}
 
   gistForm!: FormGroup;
   private editors: ace.Ace.Editor[] = [];
@@ -62,6 +64,23 @@ export class CreateGistPageComponent implements OnInit, AfterViewInit {
 
   onSubmit = () => {
     console.log(this.gistForm.value);
+    const gist = this.gistForm.value;
+    const files = gist.files.reduce((acc: any, file: any) => {
+      acc[file.filename] = {
+        content: file.content,
+      };
+      return acc;
+    }, {});
+
+    gist.files = files;
+    this.httpService.postGist(gist).subscribe(
+      (response) => {
+        console.log('Gist posted successfully:', response); // Log the success response
+      },
+      (error) => {
+        console.error('Error posting gist:', error); // Log the error if something goes wrong
+      }
+    );
   };
 
   showDeleteIcon = (index: number) =>

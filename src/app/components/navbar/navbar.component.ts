@@ -9,6 +9,7 @@ import {
 import { initializeApp } from 'firebase/app';
 import { environment } from '../../../environments/environment';
 import { SharedService } from '../../utils/services/shared.service';
+import { HttpService } from '../../utils/services/http.service';
 
 @Component({
   selector: 'app-navbar',
@@ -16,17 +17,27 @@ import { SharedService } from '../../utils/services/shared.service';
   styleUrl: './navbar.component.scss',
 })
 export class NavbarComponent {
-  user: User | null = null;
+  user: any = null;
   private auth!: any;
   showMenu: boolean = false;
-  constructor(private sharedService: SharedService) {}
+  constructor(
+    private sharedService: SharedService,
+    private httpService: HttpService
+  ) {}
 
   toggleShowMenu() {
     this.showMenu = !this.showMenu;
   }
-  setupUser(user: User | null) {
-    this.user = user;
-    this.sharedService.user.next(user);
+  goToGithubProfile(){
+    window.open(`https://github.com/${this.user.login}`, "_blank")
+  }
+  setupUser() {
+    const subscription = this.httpService
+      .getUser()
+      .subscribe((loggedInUser) => {
+        this.user = loggedInUser;
+        this.sharedService.user.next(loggedInUser);
+      }); //separate as this API provide proper user data
   }
 
   @HostListener('document:click', ['$event'])
@@ -43,8 +54,8 @@ export class NavbarComponent {
   }
   ngOnInit(): void {
     this.auth = getAuth(initializeApp(environment.firebaseConfig));
-    this.auth.onAuthStateChanged((user: User) => {
-      this.setupUser(user);
+    this.auth.onAuthStateChanged(() => {
+      this.setupUser();
     });
   }
 
@@ -53,7 +64,7 @@ export class NavbarComponent {
     signInWithPopup(this.auth, provider)
       .then((result) => {
         console.log(result.user);
-        this.setupUser(result.user);
+        this.setupUser();
       })
       .catch((error) => {
         console.error('Sign-in error:', error);

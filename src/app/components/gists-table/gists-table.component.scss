@@ -38,3 +38,15 @@
 .pagination {
   background-color: $table-row-gray;
 }
+
+.starred {
+  fill: $primary-color;
+  stroke: $primary-color;
+  stroke-width: 3px
+}
+
+.not-starred {
+  fill: $white;
+  stroke: $primary-color;
+  stroke-width: 3px
+}

@@ -3,6 +3,7 @@ export interface TableColumns {
   notebookName: string;
   keyword: string;
   updated: string;
+  isStarred:Boolean
 }
 
 export interface nameTableColumn {

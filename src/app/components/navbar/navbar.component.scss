@@ -71,6 +71,10 @@
           &:not(:first-of-type):hover {
             cursor: pointer;
           }
+          a{
+            text-decoration: none;
+            color:initial
+          }
         }
       }
     }

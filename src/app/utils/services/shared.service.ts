@@ -11,4 +11,5 @@ export class SharedService {
   openedGistCard: any = new BehaviorSubject(null);
   selectedGistView: any = new BehaviorSubject<string>('list');
   constructor() {}
+
 }

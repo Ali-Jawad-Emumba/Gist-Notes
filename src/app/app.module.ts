@@ -16,6 +16,7 @@ import { MatTableModule } from '@angular/material/table';
 import { MatMenuModule } from '@angular/material/menu';
 import { CreateGistPageComponent } from './pages/create-gist-page/create-gist-page.component';
 import { ReactiveFormsModule } from '@angular/forms';
+import { UserGistsPageComponent } from './pages/user-gists-page/user-gists-page.component';
 
 @NgModule({
   declarations: [
@@ -25,6 +26,7 @@ import { ReactiveFormsModule } from '@angular/forms';
     GistsTableComponent,
     GistViewPageComponent,
     CreateGistPageComponent,
+    UserGistsPageComponent,
   ],
   imports: [
     BrowserModule,

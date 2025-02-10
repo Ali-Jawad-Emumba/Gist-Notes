@@ -63,9 +63,11 @@
       *ngSwitchCase="'list'"
       [publicGists]="publicGists"
     ></app-gists-table>
-    <app-gist-card
-      *ngSwitchCase="'card'"
-      [publicGists]="publicGists"
-    ></app-gist-card>
+    <div *ngSwitchCase="'card'">
+      <app-gist-card
+        [publicGists]="publicGists"
+        cardWidth="30%"
+      ></app-gist-card>
+    </div>
   </div>
 </div>

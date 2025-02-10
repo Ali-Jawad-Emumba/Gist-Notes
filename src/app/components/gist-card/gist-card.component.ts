@@ -11,8 +11,9 @@ import { SharedService } from '../../utils/services/shared.service';
 })
 export class GistCardComponent implements OnInit {
   @Input({ required: true }) publicGists!: any;
+  @Input({ required: true }) cardWidth!: string;
   cards!: any;
-  loading: boolean = true;
+  loading: boolean = false;
 
   constructor(
     private httpService: HttpService,
@@ -27,7 +28,7 @@ export class GistCardComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    if (this.publicGists) {
+    if (this.publicGists && this.publicGists.length > 0) {
       this.publicGists = this.publicGists.slice(0, 9);
       this.fetchCardDetails();
     }
@@ -54,9 +55,8 @@ export class GistCardComponent implements OnInit {
     });
 
     const cardsData = await Promise.all(promises);
-    if (cardsData) {
-      this.loading = false;
-      this.cards = cardsData;
-    }
+
+    this.loading = false;
+    this.cards = cardsData;
   }
 }
