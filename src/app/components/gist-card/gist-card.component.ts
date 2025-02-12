@@ -3,6 +3,7 @@ import dayjs from 'dayjs';
 import { HttpService } from '../../utils/services/http.service';
 import { Router } from '@angular/router';
 import { SharedService } from '../../utils/services/shared.service';
+import { PageEvent } from '@angular/material/paginator';
 
 @Component({
   selector: 'app-gist-card',
@@ -14,6 +15,9 @@ export class GistCardComponent implements OnInit {
   @Input({ required: true }) cardWidth!: string;
   cards!: any;
   loading: boolean = false;
+  totalItems!: number; // Total items for pagination (for example)
+  pageSize: number = 6; // Default items per page
+  pagedData: any[] = []; // Data to display on the current page
 
   constructor(
     private httpService: HttpService,
@@ -29,13 +33,23 @@ export class GistCardComponent implements OnInit {
 
   ngOnInit(): void {
     if (this.publicGists && this.publicGists.length > 0) {
-      this.publicGists = this.publicGists.slice(0, 9);
+      this.totalItems = this.publicGists.length;
+      this.loadPageData();
       this.fetchCardDetails();
     }
   }
+  loadPageData() {
+    this.pagedData = this.publicGists.slice(0, this.pageSize);
+  }
+  onPageChange(event: PageEvent) {
+    const startIndex = event.pageIndex * event.pageSize;
+    const endIndex = startIndex + event.pageSize;
+    this.pagedData = this.publicGists.slice(startIndex, endIndex); // Update data on page change
+    this.fetchCardDetails();
+  }
   async fetchCardDetails() {
     this.loading = true;
-    const promises = this.publicGists.map(
+    const promises = this.pagedData.map(
       async (e: any) => await this.sharedService.fetchCardDetail(e)
     );
 
