@@ -5,6 +5,7 @@ import {
   ViewChildren,
   AfterViewInit,
   contentChild,
+  OnDestroy,
 } from '@angular/core';
 import {
   FormArray,
@@ -17,17 +18,21 @@ import * as ace from 'ace-builds'; // Import Ace Editor
 import 'ace-builds/src-noconflict/mode-javascript'; // Import mode for JavaScript (or any other language)
 import 'ace-builds/src-noconflict/theme-chrome'; // Import theme (optional)
 import { HttpService } from '../../utils/services/http.service';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-create-gist-page',
   templateUrl: './create-gist-page.component.html',
   styleUrls: ['./create-gist-page.component.scss'],
 })
-export class CreateGistPageComponent implements OnInit, AfterViewInit {
+export class CreateGistPageComponent
+  implements OnInit, AfterViewInit, OnDestroy
+{
   constructor(private fb: FormBuilder, private httpService: HttpService) {}
   errorMessage = { show: false, message: '', nature: '' };
   gistForm!: FormGroup;
   private editors: ace.Ace.Editor[] = [];
+  subscription!: Subscription;
 
   @ViewChildren('editor') private editorElements!: ElementRef[]; // Reference to the DOM element
 
@@ -73,7 +78,7 @@ export class CreateGistPageComponent implements OnInit, AfterViewInit {
     }, {});
 
     gist.files = files;
-    this.httpService.postGist(gist).subscribe(
+    this.subscription = this.httpService.postGist(gist).subscribe(
       (response) => {
         this.gistForm.get('files')?.setValue([]);
         this.addFile();
@@ -135,5 +140,9 @@ export class CreateGistPageComponent implements OnInit, AfterViewInit {
       this.editors[index].destroy();
       this.editors.splice(index, 1); // Remove the destroyed editor
     }
+  }
+
+  ngOnDestroy(): void {
+    this.subscription.unsubscribe();
   }
 }

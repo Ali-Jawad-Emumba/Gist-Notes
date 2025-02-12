@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { SharedService } from '../../utils/services/shared.service';
 import { User } from 'firebase/auth';
 import { Subscription } from 'rxjs';
@@ -10,7 +10,7 @@ import { ActivatedRoute, Router } from '@angular/router';
   templateUrl: './user-gists-page.component.html',
   styleUrl: './user-gists-page.component.scss',
 })
-export class UserGistsPageComponent implements OnInit {
+export class UserGistsPageComponent implements OnInit, OnDestroy {
   user!: any;
   subscriptions: Subscription[] = [];
   gists!: any;
@@ -26,7 +26,8 @@ export class UserGistsPageComponent implements OnInit {
   ngOnInit(): void {
     const paramsSubscription = this.route.params.subscribe((params: any) => {
       this.params = params.type;
-      this.gistsHeading = params.type === 'starred'?'Starred Gists':'All Gists';
+      this.gistsHeading =
+        params.type === 'starred' ? 'Starred Gists' : 'All Gists';
     });
     const userSubscription = this.sharedService.user.subscribe((user: any) => {
       this.user = user;
@@ -46,5 +47,9 @@ export class UserGistsPageComponent implements OnInit {
   }
   goToGithubProfile() {
     window.open(`https://github.com/${this.user.login}`, '_blank');
+  }
+
+  ngOnDestroy(): void {
+    this.subscriptions.forEach((subscription) => subscription.unsubscribe());
   }
 }

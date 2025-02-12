@@ -1,4 +1,10 @@
-import { AfterViewInit, Component, HostListener, OnInit } from '@angular/core';
+import {
+  AfterViewInit,
+  Component,
+  HostListener,
+  OnDestroy,
+  OnInit,
+} from '@angular/core';
 import {
   getAuth,
   GithubAuthProvider,
@@ -11,17 +17,19 @@ import { environment } from '../../../environments/environment';
 import { SharedService } from '../../utils/services/shared.service';
 import { HttpService } from '../../utils/services/http.service';
 import { Router } from '@angular/router';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-navbar',
   templateUrl: './navbar.component.html',
   styleUrl: './navbar.component.scss',
 })
-export class NavbarComponent implements OnInit {
+export class NavbarComponent implements OnInit, OnDestroy {
   user: any = null;
   private auth!: any;
   showMenu: boolean = false;
   searchedId: string = '';
+  subscription!: Subscription;
 
   constructor(
     private sharedService: SharedService,
@@ -43,12 +51,10 @@ export class NavbarComponent implements OnInit {
     window.open(`https://github.com/${this.user.login}`, '_blank');
   }
   setupUser() {
-    const subscription = this.httpService
-      .getUser()
-      .subscribe((loggedInUser) => {
-        this.user = loggedInUser;
-        this.sharedService.user.next(loggedInUser);
-      }); //separate as this API provide proper user data
+    this.subscription = this.httpService.getUser().subscribe((loggedInUser) => {
+      this.user = loggedInUser;
+      this.sharedService.user.next(loggedInUser);
+    }); //separate as this API provide proper user data
   }
 
   @HostListener('document:click', ['$event'])
@@ -87,5 +93,9 @@ export class NavbarComponent implements OnInit {
       this.user = null;
       console.log('User signed out');
     });
+  }
+
+  ngOnDestroy(): void {
+    this.subscription.unsubscribe();
   }
 }
