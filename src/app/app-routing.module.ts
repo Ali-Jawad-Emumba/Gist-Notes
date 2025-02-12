@@ -7,13 +7,14 @@ import { UserGistsPageComponent } from './pages/user-gists-page/user-gists-page.
 
 const routes: Routes = [
   { path: '', component: HomePageComponent, pathMatch: 'full' },
-  { path: 'gist/:name', component: GistViewPageComponent, pathMatch: 'full' },
+  { path: 'gist/:id', component: GistViewPageComponent, pathMatch: 'full' },
   {
     path: 'create-gist',
     component: CreateGistPageComponent,
     pathMatch: 'full',
   },
   { path: 'gists', component: UserGistsPageComponent, pathMatch: 'full' },
+  { path: 'gists/:type', component: UserGistsPageComponent, pathMatch: 'full' },
 ];
 
 @NgModule({

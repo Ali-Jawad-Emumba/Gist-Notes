@@ -1,4 +1,6 @@
 @import "../../../assets/scss/mixins.scss";
+@import "../../../assets/scss/colors.scss";
+
 .main-div {
   @include flexBox(row, initial, center, 40px);
   .profile {
@@ -31,6 +33,17 @@
         font-family: "Inter-Regular";
         font-weight: 400;
         font-size: 2.5rem;
+      }
+
+      .counter {
+        @include flexBox(row, center, center, 0);
+        background-color: $primary-color;
+        font-family: "Inter-Bold";
+        font-size: 1.1rem;
+        border-radius: 50%;
+        width: 24px;
+        aspect-ratio: 1;
+        color: $white;
       }
     }
   }

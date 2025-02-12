@@ -18,13 +18,16 @@ export class GistViewPageComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    this.subcription = this.sharedService.openedGistCard.subscribe(
-      (gist: any) => (this.gist = gist)
+    this.subcription = this.sharedService.openedGistId.subscribe(
+      async (gistId: string) => {
+        const gist = await this.httpService.getAGist(gistId).toPromise();
+        this.gist = await this.sharedService.fetchCardDetail(gist);
+      }
     );
   }
 
   forkGist() {
-    window.open(this.gist.forksURL, '_blank');
+    window.open(this.gist.forksURL, '_blank'); //fork gist api not working so i did this
   }
 
   starGist() {

@@ -1,4 +1,4 @@
-import { Component, HostListener } from '@angular/core';
+import { AfterViewInit, Component, HostListener, OnInit } from '@angular/core';
 import {
   getAuth,
   GithubAuthProvider,
@@ -10,26 +10,37 @@ import { initializeApp } from 'firebase/app';
 import { environment } from '../../../environments/environment';
 import { SharedService } from '../../utils/services/shared.service';
 import { HttpService } from '../../utils/services/http.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-navbar',
   templateUrl: './navbar.component.html',
   styleUrl: './navbar.component.scss',
 })
-export class NavbarComponent {
+export class NavbarComponent implements OnInit {
   user: any = null;
   private auth!: any;
   showMenu: boolean = false;
+  searchedId: string = '';
+
   constructor(
     private sharedService: SharedService,
-    private httpService: HttpService
+    private httpService: HttpService,
+    private router: Router
   ) {}
+
+  search(event: Event) {
+    const val = event.target as HTMLInputElement;
+    this.searchedId = val.value;
+    this.sharedService.openedGistId.next(this.searchedId);
+    this.router.navigate([`/gist/${this.searchedId}`]);
+  }
 
   toggleShowMenu() {
     this.showMenu = !this.showMenu;
   }
-  goToGithubProfile(){
-    window.open(`https://github.com/${this.user.login}`, "_blank")
+  goToGithubProfile() {
+    window.open(`https://github.com/${this.user.login}`, '_blank');
   }
   setupUser() {
     const subscription = this.httpService

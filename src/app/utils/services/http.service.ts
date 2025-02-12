@@ -8,7 +8,7 @@ import { environment } from '../../../environments/environment';
 export class HttpService {
   private BASE_URL = 'https://api.github.com';
   private headers = new HttpHeaders({
-    Authorization: `Bearer ${environment.githubToken}`,
+    Authorization: `Bearer ${import.meta.env.NG_APP_GITHUB_TOKEN}`,
   });
   constructor(private http: HttpClient) {}
 
@@ -21,6 +21,9 @@ export class HttpService {
       headers: this.headers,
     });
 
+  getUserStarredGists = () =>
+    this.http.get(`${this.BASE_URL}/gists/starred`, { headers: this.headers });
+
   checkStar = (gistId: string) =>
     this.http.get(`${this.BASE_URL}/gists/${gistId}/star`, {
       headers: this.headers,
@@ -28,7 +31,6 @@ export class HttpService {
 
   getUser = () =>
     this.http.get(`${this.BASE_URL}/user`, { headers: this.headers });
-
   postGist = (gist: any) =>
     this.http.post(`${this.BASE_URL}/gists`, gist, { headers: this.headers });
 
@@ -41,4 +43,8 @@ export class HttpService {
     this.http.put(`${this.BASE_URL}/gists/${body.gistId}/star`, body, {
       headers: this.headers,
     });
+
+  getAGist = (gistId: string) =>
+    this.http.get(`${this.BASE_URL}/gists/${gistId}`);
+
 }

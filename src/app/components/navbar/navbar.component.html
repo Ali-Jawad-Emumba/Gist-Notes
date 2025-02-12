@@ -10,7 +10,7 @@
   <div class="search-and-login">
     <div class="search">
       <mat-icon class="search-icon">search</mat-icon>
-      <input type="text" placeholder="Search" />
+      <input type="text" (keydown.enter)="search($event)" placeholder="Search" />
     </div>
     <button *ngIf="!user" class="login-button" (click)="signInWithGitHub()">
       Login
@@ -29,7 +29,7 @@
           </li>
           <hr />
           <li routerLink="gists">Your Gists</li>
-          <li>Starred Gists</li>
+          <li [routerLink]="['gists', 'starred']">Starred Gists</li>
           <li (click)="goToGithubProfile()">Your Github Profile</li>
           <li routerLink="/create-gist">Create Gist</li>
           <hr />

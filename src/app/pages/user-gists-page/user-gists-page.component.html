@@ -8,8 +8,8 @@
   </div>
   <div class="gists-section">
     <div class="gists-heading">
-      <h1>All Gists</h1>
-      <div></div>
+      <h1>{{ gistsHeading }}</h1>
+      <div class="counter">{{ gists.length }}</div>
     </div>
     <div class="cards" *ngIf="gists">
       <app-gist-card [publicGists]="gists" cardWidth="100%"></app-gist-card>

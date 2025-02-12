@@ -22,9 +22,9 @@ export class GistCardComponent implements OnInit {
   ) {}
   jsonData = { name: 'Ali', age: 25, skills: ['Angular', 'React'] };
 
-  openGistView(card: any) {
-    this.sharedService.openedGistCard.next(card);
-    this.router.navigate([`/gist/${card.name}`]);
+  openGistView(gistId: string) {
+    this.sharedService.openedGistId.next(gistId);
+    this.router.navigate([`/gist/${gistId}`]);
   }
 
   ngOnInit(): void {
@@ -35,25 +35,9 @@ export class GistCardComponent implements OnInit {
   }
   async fetchCardDetails() {
     this.loading = true;
-    const promises = this.publicGists.map(async (e: any) => {
-      let jsonData: any = null;
-      let gistName = Object.keys(e.files)[0];
-
-      const json = await this.httpService
-        .getGistCodePreview(e.files[gistName].raw_url)
-        .toPromise();
-      jsonData = json;
-      return {
-        json: jsonData,
-        avatar: e.owner.avatar_url,
-        name: e.owner.login,
-        gistName,
-        created: dayjs(e.created_at).fromNow(),
-        description: e.description,
-        gistId: e.id,
-        forksURL:e.forks_url
-      };
-    });
+    const promises = this.publicGists.map(
+      async (e: any) => await this.sharedService.fetchCardDetail(e)
+    );
 
     const cardsData = await Promise.all(promises);
 

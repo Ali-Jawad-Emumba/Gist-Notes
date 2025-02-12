@@ -3,7 +3,7 @@
     class="card"
     [style.width]="cardWidth"
     *ngFor="let card of cards"
-    (click)="openGistView(card)"
+    (click)="openGistView(card.gistId)"
   >
     <div class="json">
       <pre class="line-numbers"><code>{{card.json}}</code></pre>
