@@ -1,16 +1,19 @@
 <div class="navbar">
-  <div>
+  <div routerLink="/">
     <img
       src="../../assets/images/Emumba Logo.svg"
       alt="emumba-logo"
-      routerLink="/"
       class="emumba-logo"
     />
   </div>
   <div class="search-and-login">
     <div class="search">
       <mat-icon class="search-icon">search</mat-icon>
-      <input type="text" (keydown.enter)="search($event)" placeholder="Search" />
+      <input
+        type="text"
+        (keydown.enter)="search($event)"
+        placeholder="Search"
+      />
     </div>
     <button *ngIf="!user" class="login-button" (click)="signInWithGitHub()">
       Login

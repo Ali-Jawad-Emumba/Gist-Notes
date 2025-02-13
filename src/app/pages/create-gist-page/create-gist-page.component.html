@@ -8,7 +8,7 @@
         placeholder="Gist Description"
         formControlName="description"
       />
-      <div formArrayName="files">
+      <div class="files" formArrayName="files">
         <div
           class="file-wrapper"
           *ngFor="let file of files.controls; let i = index"
@@ -32,7 +32,7 @@
         </div>
       </div>
       <div class="action-btns">
-        <button class="btn secondary-btn" (click)="addFile()">Add File</button>
+        <button class="btn secondary-btn" type="button" (click)="addFile()">Add File</button>
         <button class="btn primary-btn" type="submit">Create Gist</button>
       </div>
       <p

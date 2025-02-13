@@ -31,6 +31,10 @@
         }
       }
 
+      .files{
+        @include flexBox(column, initial, initial, 10px)
+      }
+
       .description-input {
         width: 100%;
       }

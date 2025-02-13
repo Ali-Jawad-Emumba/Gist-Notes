@@ -61,5 +61,4 @@ export class GistsTableComponent implements OnInit, AfterViewInit, OnDestroy {
     paginatorIntl.previousPageLabel = '';
   }
 
-  ngOnDestroy(): void {}
 }
