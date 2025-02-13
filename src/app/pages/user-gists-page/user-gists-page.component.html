@@ -1,7 +1,7 @@
 <div class="main-div">
   <div class="profile">
-    <img class="user-photo" [src]="user['avatar_url']" alt="" />
-    <h2>{{ user.login }}</h2>
+    <img class="user-photo" [src]="user.image" alt="" />
+    <h2>{{ user.name }}</h2>
     <button class="btn primary-btn" (click)="goToGithubProfile()">
       View Full Profile
     </button>

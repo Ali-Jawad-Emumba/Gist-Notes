@@ -47,7 +47,7 @@ export class GistsTableComponent implements OnInit, AfterViewInit {
       keyword: 'Keyword',
       updated: dayjs(e.updated_at).fromNow(),
       forksURL: e.forks_url,
-      isStarred: index % 3 === 0,
+      isStarred: false,
     }));
   }
 

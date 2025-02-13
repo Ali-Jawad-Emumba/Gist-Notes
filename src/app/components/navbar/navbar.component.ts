@@ -48,28 +48,31 @@ export class NavbarComponent implements OnInit, OnDestroy {
     this.showMenu = !this.showMenu;
   }
   goToGithubProfile() {
-    window.open(`https://github.com/${this.user.login}`, '_blank');
+    window.open(`https://github.com/${this.user.name}`, '_blank');
   }
-  setupUser() {
-    this.subscription = this.httpService.getUser().subscribe((loggedInUser) => {
-      this.user = loggedInUser;
-      this.sharedService.user.next(loggedInUser);
-    }); //separate as this API provide proper user data
-  }
+  setupUser(user: any) {
+    this.user = {
+      name: user.reloadUserInfo.screenName,
+      image: user.photoURL,
+    };
+    this.sharedService.user.next(this.user);
+  } //separate as this API provide proper user data
 
   @HostListener('document:click', ['$event'])
   onClickOutside(event: Event) {
     const target = event.target as HTMLElement;
 
-    if (!target.closest('.menu') && !target.closest('.user-avatar') ||
-    target.closest('.menu li')) {
+    if (
+      (!target.closest('.menu') && !target.closest('.user-avatar')) ||
+      target.closest('.menu li')
+    ) {
       this.showMenu = false;
     }
   }
   ngOnInit(): void {
     this.auth = getAuth(initializeApp(environment.firebaseConfig));
-    this.auth.onAuthStateChanged(() => {
-      this.setupUser();
+    this.auth.onAuthStateChanged((user: any) => {
+      this.setupUser(user);
     });
   }
 
@@ -78,7 +81,7 @@ export class NavbarComponent implements OnInit, OnDestroy {
     signInWithPopup(this.auth, provider)
       .then((result) => {
         console.log(result.user);
-        this.setupUser();
+        this.setupUser(result.user);
       })
       .catch((error) => {
         console.error('Sign-in error:', error);
@@ -86,9 +89,12 @@ export class NavbarComponent implements OnInit, OnDestroy {
   }
 
   signOut() {
+  
+this.router.navigate(['/'])
     signOut(this.auth).then(() => {
       this.user = null;
       console.log('User signed out');
+      this.sharedService.user.next(null);
     });
   }
 

@@ -34,7 +34,7 @@ export class UserGistsPageComponent implements OnInit, OnDestroy {
       const getUserData = () =>
         this.params && this.params == 'starred'
           ? this.httpService.getUserStarredGists()
-          : this.httpService.getUserGists(user.login);
+          : this.httpService.getUserGists(user.name);
       const gistSubscription = getUserData().subscribe((gists) => {
         console.log(gists);
         this.gists = gists;
@@ -46,7 +46,7 @@ export class UserGistsPageComponent implements OnInit, OnDestroy {
     this.subscriptions.push(userSubscription, paramsSubscription);
   }
   goToGithubProfile() {
-    window.open(`https://github.com/${this.user.login}`, '_blank');
+    window.open(`https://github.com/${this.user.name}`, '_blank');
   }
 
   ngOnDestroy(): void {
