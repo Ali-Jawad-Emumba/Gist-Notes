@@ -61,11 +61,8 @@ export class NavbarComponent implements OnInit, OnDestroy {
   onClickOutside(event: Event) {
     const target = event.target as HTMLElement;
 
-    if (!target.closest('.menu') && !target.closest('.user-avatar')) {
-      this.showMenu = false;
-    }
-
-    if (target.closest('.menu li')) {
+    if (!target.closest('.menu') && !target.closest('.user-avatar') ||
+    target.closest('.menu li')) {
       this.showMenu = false;
     }
   }
