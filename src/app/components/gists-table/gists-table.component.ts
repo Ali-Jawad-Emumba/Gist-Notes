@@ -21,7 +21,7 @@ dayjs.extend(relativeTime);
   templateUrl: './gists-table.component.html',
   styleUrl: './gists-table.component.scss',
 })
-export class GistsTableComponent implements OnInit, AfterViewInit, OnDestroy {
+export class GistsTableComponent implements OnInit, AfterViewInit {
   tableData: TableColumns[] = [];
   @Input({ required: true }) publicGists!: any[];
   displayedColumns: string[] = [
