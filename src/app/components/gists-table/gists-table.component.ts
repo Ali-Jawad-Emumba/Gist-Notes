@@ -12,7 +12,7 @@ import { TableColumns } from '../../utils/interfaces';
 import dayjs from 'dayjs';
 import relativeTime from 'dayjs/plugin/relativeTime';
 import { SharedService } from '../../utils/services/shared.service';
-import { firstValueFrom } from 'rxjs';
+import { firstValueFrom, Subscription } from 'rxjs';
 import { HttpService } from '../../utils/services/http.service';
 dayjs.extend(relativeTime);
 
@@ -21,7 +21,7 @@ dayjs.extend(relativeTime);
   templateUrl: './gists-table.component.html',
   styleUrl: './gists-table.component.scss',
 })
-export class GistsTableComponent implements OnInit, AfterViewInit {
+export class GistsTableComponent implements OnInit, AfterViewInit, OnDestroy {
   tableData: TableColumns[] = [];
   @Input({ required: true }) publicGists!: any[];
   displayedColumns: string[] = [
@@ -32,6 +32,7 @@ export class GistsTableComponent implements OnInit, AfterViewInit {
     'action',
   ];
   dataSource!: any;
+  userSubscription!: Subscription;
 
   constructor(
     public sharedService: SharedService,
@@ -41,17 +42,28 @@ export class GistsTableComponent implements OnInit, AfterViewInit {
   @ViewChild(MatPaginator) paginator: MatPaginator | any;
 
   ngOnInit(): void {
+    this.userSubscription = this.sharedService.user.subscribe((val: any) =>
+      this.setTableData(val)
+    );
+  }
+
+  setTableData(user: any) {
     this.tableData = this.publicGists.map((e: any, index) => ({
       name: { name: e.owner.login, avatar: e.owner.avatar_url },
       notebookName: Object.keys(e.files)[0],
       keyword: 'Keyword',
       updated: dayjs(e.updated_at).fromNow(),
       forksURL: e.forks_url,
-      isStarred: false,
+      isStarred: user && index % 3 === 0,
     }));
+    this.setupDataSource();
   }
 
   ngAfterViewInit() {
+    this.setupDataSource();
+  }
+
+  setupDataSource() {
     this.dataSource = new MatTableDataSource<TableColumns>(this.tableData);
     this.dataSource.paginator = this.paginator;
 
@@ -61,4 +73,7 @@ export class GistsTableComponent implements OnInit, AfterViewInit {
     paginatorIntl.previousPageLabel = '';
   }
 
+  ngOnDestroy(): void {
+    this.userSubscription.unsubscribe();
+  }
 }
