@@ -15,8 +15,7 @@ import {
   Validators,
 } from '@angular/forms';
 import * as ace from 'ace-builds'; // Import Ace Editor
-import 'ace-builds/src-noconflict/mode-javascript'; // Import mode for JavaScript (or any other language)
-import 'ace-builds/src-noconflict/theme-chrome'; // Import theme (optional)
+
 import { HttpService } from '../../utils/services/http.service';
 import { Subscription } from 'rxjs';
 
@@ -37,6 +36,13 @@ export class CreateGistPageComponent
   @ViewChildren('editor') private editorElements!: ElementRef[]; // Reference to the DOM element
 
   ngOnInit(): void {
+    const doImports = async () => {
+      await import('ace-builds/src-noconflict/ace');
+      await import('ace-builds/src-noconflict/ext-language_tools');
+      await import('ace-builds/src-noconflict/mode-javascript');
+      await import('ace-builds/src-noconflict/theme-chrome');
+    };
+    doImports();
     this.gistForm = this.fb.group({
       description: ['', Validators.required],
       files: this.fb.array([this.createNewFile()]),
