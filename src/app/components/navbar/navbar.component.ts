@@ -18,14 +18,17 @@ import { SharedService } from '../../utils/services/shared.service';
 import { HttpService } from '../../utils/services/http.service';
 import { Router } from '@angular/router';
 import { Subscription } from 'rxjs';
+import { user } from '../../utils/interfaces';
 
 @Component({
   selector: 'app-navbar',
   templateUrl: './navbar.component.html',
   styleUrl: './navbar.component.scss',
 })
+
+
 export class NavbarComponent implements OnInit, OnDestroy {
-  user: any = null;
+  user: user |null = null;
   private auth!: any;
   showMenu: boolean = false;
   searchedId: string = '';
@@ -48,7 +51,7 @@ export class NavbarComponent implements OnInit, OnDestroy {
     this.showMenu = !this.showMenu;
   }
   goToGithubProfile() {
-    window.open(`https://github.com/${this.user.name}`, '_blank');
+    window.open(`https://github.com/${this.user?.name}`, '_blank');
   }
   setupUser(user: any) {
     this.user = {

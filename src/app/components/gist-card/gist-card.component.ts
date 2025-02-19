@@ -4,6 +4,7 @@ import { HttpService } from '../../utils/services/http.service';
 import { Router } from '@angular/router';
 import { SharedService } from '../../utils/services/shared.service';
 import { PageEvent } from '@angular/material/paginator';
+import { card } from '../../utils/interfaces';
 
 @Component({
   selector: 'app-gist-card',
@@ -13,7 +14,7 @@ import { PageEvent } from '@angular/material/paginator';
 export class GistCardComponent implements OnInit {
   @Input({ required: true }) publicGists!: any;
   @Input({ required: true }) cardWidth!: string;
-  cards!: any;
+  cards!: card[];
   loading: boolean = false;
   totalItems!: number; // Total items for pagination (for example)
   pageSize: number = 6; // Default items per page

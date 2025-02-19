@@ -8,6 +8,8 @@ import { HttpService } from './http.service';
 @Injectable({
   providedIn: 'root',
 })
+
+
 export class SharedService {
   user: any = new BehaviorSubject<User | null>(null);
   openedGistId: any = new BehaviorSubject(null);
