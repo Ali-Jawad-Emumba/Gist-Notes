@@ -12,7 +12,6 @@ import { HttpService } from './http.service';
 
 export class SharedService {
   user: any = new BehaviorSubject<User | null>(null);
-  openedGistId: any = new BehaviorSubject(null);
   selectedGistView: any = new BehaviorSubject<string>('list');
 
   constructor(private httpService: HttpService) {}

@@ -10,13 +10,19 @@ import { HomePageComponent } from './pages/home-page/home-page.component';
 import { SharedModule } from './shared.module';
 import { GistsTableComponent } from './components/gists-table/gists-table.component';
 import { MatPaginatorModule } from '@angular/material/paginator';
-import { HttpClientModule } from '@angular/common/http';
+import {
+  HTTP_INTERCEPTORS,
+  HttpClientModule,
+  provideHttpClient,
+  withInterceptors,
+} from '@angular/common/http';
 import { GistViewPageComponent } from './pages/gist-view-page/gist-view-page.component';
 import { MatTableModule } from '@angular/material/table';
 import { MatMenuModule } from '@angular/material/menu';
 import { CreateGistPageComponent } from './pages/create-gist-page/create-gist-page.component';
 import { ReactiveFormsModule } from '@angular/forms';
 import { UserGistsPageComponent } from './pages/user-gists-page/user-gists-page.component';
+import { httpInterceptor } from './utils/interceptors/http.interceptor';
 
 @NgModule({
   declarations: [
@@ -41,7 +47,7 @@ import { UserGistsPageComponent } from './pages/user-gists-page/user-gists-page.
     MatMenuModule,
     ReactiveFormsModule,
   ],
-  providers: [],
+  providers: [provideHttpClient(withInterceptors([httpInterceptor]))],
   bootstrap: [AppComponent],
 })
 export class AppModule {}

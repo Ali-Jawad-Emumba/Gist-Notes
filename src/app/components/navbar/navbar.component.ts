@@ -43,7 +43,6 @@ export class NavbarComponent implements OnInit, OnDestroy {
   search(event: Event) {
     const val = event.target as HTMLInputElement;
     this.searchedId = val.value;
-    this.sharedService.openedGistId.next(this.searchedId);
     this.router.navigate([`/gist/${this.searchedId}`]);
   }
 

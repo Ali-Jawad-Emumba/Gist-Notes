@@ -28,7 +28,6 @@ export class GistCardComponent implements OnInit {
   jsonData = { name: 'Ali', age: 25, skills: ['Angular', 'React'] };
 
   openGistView(gistId: string) {
-    this.sharedService.openedGistId.next(gistId);
     this.router.navigate([`/gist/${gistId}`]);
   }
 

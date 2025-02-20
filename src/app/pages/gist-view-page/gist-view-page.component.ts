@@ -2,6 +2,7 @@ import { Component, OnDestroy, OnInit } from '@angular/core';
 import { SharedService } from '../../utils/services/shared.service';
 import { Subscription } from 'rxjs';
 import { HttpService } from '../../utils/services/http.service';
+import { ActivatedRoute, Route } from '@angular/router';
 
 @Component({
   selector: 'app-gist-view-page',
@@ -10,25 +11,31 @@ import { HttpService } from '../../utils/services/http.service';
 })
 export class GistViewPageComponent implements OnInit, OnDestroy {
   gist!: any;
-  subcriptions!: Subscription[];
+  subcriptions: Subscription[] = [];
+  openedGistId!: string;
 
   constructor(
     private sharedService: SharedService,
-    private httpService: HttpService
+    private httpService: HttpService,
+    private route: ActivatedRoute
   ) {}
 
   ngOnInit(): void {
-    const gistGetSubscription = this.sharedService.openedGistId.subscribe(
-      async (gistId: string) => {
-        const gist = await this.httpService.getAGist(gistId).toPromise();
-        this.gist = await this.sharedService.fetchCardDetail(gist);
-      }
-    );
-    this.subcriptions.push(gistGetSubscription);
+    const paramSubscription = this.route.params.subscribe(async (param) => {
+      const openedGistId = param['id'];
+      const gist = await this.httpService
+        .getAGist(openedGistId)
+        .toPromise();
+      this.gist = await this.sharedService.fetchCardDetail(gist);
+    });
+    this.subcriptions.push(paramSubscription);
   }
 
   forkGist() {
-    window.open(this.gist.forksURL, '_blank'); //fork gist api not working so i did this
+    const forkGistSubscription = this.httpService
+      .forkGist(this.gist.gistId)
+      .subscribe(() => console.log('Gist Forked'));
+    this.subcriptions.push(forkGistSubscription);
   }
 
   starGist() {
