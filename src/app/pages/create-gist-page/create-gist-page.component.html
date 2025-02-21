@@ -32,17 +32,19 @@
         </div>
       </div>
       <div class="action-btns">
-        <button class="btn secondary-btn" type="button" (click)="addFile()">Add File</button>
+        <button class="btn secondary-btn" type="button" (click)="addFile()">
+          Add File
+        </button>
         <button class="btn primary-btn" type="submit">Create Gist</button>
       </div>
       <p
         class="error"
-        *ngIf="errorMessage.show"
+        *ngIf="errorMessage().show"
         [ngStyle]="{
-          color: errorMessage.nature === 'succuess' ? 'green' : 'red'
+          color: errorMessage().nature === 'succuess' ? 'green' : 'red'
         }"
       >
-        {{ errorMessage.message }}
+        {{ errorMessage().message }}
       </p>
     </form>
   </div>

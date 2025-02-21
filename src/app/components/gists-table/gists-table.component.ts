@@ -4,7 +4,9 @@ import {
   Input,
   OnDestroy,
   OnInit,
+  signal,
   ViewChild,
+  WritableSignal,
 } from '@angular/core';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatTableDataSource } from '@angular/material/table';
@@ -22,7 +24,7 @@ dayjs.extend(relativeTime);
   styleUrl: './gists-table.component.scss',
 })
 export class GistsTableComponent implements OnInit, AfterViewInit, OnDestroy {
-  tableData: TableColumns[] = [];
+  tableData: WritableSignal<TableColumns[]> = signal([]);
   @Input({ required: true }) publicGists!: any[];
   displayedColumns: string[] = [
     'name',
@@ -48,7 +50,7 @@ export class GistsTableComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   setTableData(user: any) {
-    this.tableData = this.publicGists.map((e: any, index) => ({
+    const tableData = this.publicGists.map((e: any, index) => ({
       name: { name: e.owner.login, avatar: e.owner.avatar_url },
       notebookName: Object.keys(e.files)[0],
       keyword: 'Keyword',
@@ -56,6 +58,7 @@ export class GistsTableComponent implements OnInit, AfterViewInit, OnDestroy {
       forksURL: e.forks_url,
       isStarred: user && index % 3 === 0,
     }));
+    this.tableData.set(tableData);
     this.setupDataSource();
   }
 
@@ -64,7 +67,7 @@ export class GistsTableComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   setupDataSource() {
-    this.dataSource = new MatTableDataSource<TableColumns>(this.tableData);
+    this.dataSource = new MatTableDataSource<TableColumns>(this.tableData());
     this.dataSource.paginator = this.paginator;
 
     //hiding tooltip as its misplaced in component

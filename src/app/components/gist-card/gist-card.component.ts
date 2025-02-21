@@ -1,4 +1,11 @@
-import { Component, Input, OnDestroy, OnInit } from '@angular/core';
+import {
+  Component,
+  Input,
+  OnDestroy,
+  OnInit,
+  signal,
+  WritableSignal,
+} from '@angular/core';
 import dayjs from 'dayjs';
 import { HttpService } from '../../utils/services/http.service';
 import { Router } from '@angular/router';
@@ -14,11 +21,11 @@ import { card } from '../../utils/interfaces';
 export class GistCardComponent implements OnInit {
   @Input({ required: true }) publicGists!: any;
   @Input({ required: true }) cardWidth!: string;
-  cards!: card[];
-  loading: boolean = false;
-  totalItems!: number; // Total items for pagination (for example)
+  cards: WritableSignal<card[]> = signal([]);
+  loading: WritableSignal<boolean> = signal(false);
+  totalItems: WritableSignal<number> = signal(0); // Total items for pagination (for example)
   pageSize: number = 6; // Default items per page
-  pagedData: any[] = []; // Data to display on the current page
+  pagedData: WritableSignal<any[]> = signal([]); // Data to display on the current page
 
   constructor(
     private httpService: HttpService,
@@ -33,29 +40,29 @@ export class GistCardComponent implements OnInit {
 
   ngOnInit(): void {
     if (this.publicGists && this.publicGists.length > 0) {
-      this.totalItems = this.publicGists.length;
+      this.totalItems.set(this.publicGists.length);
       this.loadPageData();
       this.fetchCardDetails();
     }
   }
   loadPageData() {
-    this.pagedData = this.publicGists.slice(0, this.pageSize);
+    this.pagedData.set(this.publicGists.slice(0, this.pageSize));
   }
   onPageChange(event: PageEvent) {
     const startIndex = event.pageIndex * event.pageSize;
     const endIndex = startIndex + event.pageSize;
-    this.pagedData = this.publicGists.slice(startIndex, endIndex); // Update data on page change
+    this.pagedData.set(this.publicGists.slice(startIndex, endIndex)); // Update data on page change
     this.fetchCardDetails();
   }
   async fetchCardDetails() {
-    this.loading = true;
-    const promises = this.pagedData.map(
+    this.loading.set(true);
+    const promises = this.pagedData().map(
       async (e: any) => await this.sharedService.fetchCardDetail(e)
     );
 
     const cardsData = await Promise.all(promises);
 
-    this.loading = false;
-    this.cards = cardsData;
+    this.loading.set(false);
+    this.cards.set(cardsData);
   }
 }

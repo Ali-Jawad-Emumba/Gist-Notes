@@ -1,8 +1,8 @@
-<div class="cards-wrapper" *ngIf="cards">
+<div class="cards-wrapper" *ngIf="cards().length > 0">
   <div
     class="card"
     [style.width]="cardWidth"
-    *ngFor="let card of cards"
+    *ngFor="let card of cards()"
     (click)="openGistView(card.gistId)"
   >
     <div class="json">
@@ -23,7 +23,7 @@
     </div>
   </div>
   <mat-paginator
-    [length]="totalItems"
+    [length]="totalItems()"
     [pageSize]="pageSize"
     [pageSizeOptions]="[5, 10, 20]"
     (page)="onPageChange($event)"
@@ -31,9 +31,9 @@
   >
   </mat-paginator>
 </div>
-<div *ngIf="!cards">No Data Avaliable</div>
+<div *ngIf="cards().length === 0">No Data Avaliable</div>
 
-<div class="loader" *ngIf="loading"></div>
+<div class="loader" *ngIf="loading()"></div>
 <!-- <div class="next-previous">
   <button
     class="btn secondary-btn"

@@ -4,7 +4,7 @@
     <div class="view-layout-icons">
       <div
         class="icon-wrapper"
-        [class.selectedIcon]="viewType === 'card'"
+        [class.selectedIcon]="viewType() === 'card'"
         (click)="selectView('card')"
       >
         <svg
@@ -37,7 +37,7 @@
       </div>
       <div
         class="icon-wrapper"
-        [class.selectedIcon]="viewType === 'list'"
+        [class.selectedIcon]="viewType() === 'list'"
         (click)="selectView('list')"
       >
         <svg
@@ -58,14 +58,14 @@
       </div>
     </div>
   </div>
-  <div [ngSwitch]="viewType" *ngIf="publicGists">
+  <div [ngSwitch]="viewType()" *ngIf="publicGists()">
     <app-gists-table
       *ngSwitchCase="'list'"
-      [publicGists]="publicGists"
+      [publicGists]="publicGists()"
     ></app-gists-table>
     <div *ngSwitchCase="'card'">
       <app-gist-card
-        [publicGists]="publicGists"
+        [publicGists]="publicGists()"
         cardWidth="30%"
       ></app-gist-card>
     </div>

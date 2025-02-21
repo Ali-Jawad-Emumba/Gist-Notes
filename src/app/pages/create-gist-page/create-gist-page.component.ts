@@ -6,6 +6,8 @@ import {
   AfterViewInit,
   contentChild,
   OnDestroy,
+  WritableSignal,
+  signal,
 } from '@angular/core';
 import {
   FormArray,
@@ -28,7 +30,11 @@ export class CreateGistPageComponent
   implements OnInit, AfterViewInit, OnDestroy
 {
   constructor(private fb: FormBuilder, private httpService: HttpService) {}
-  errorMessage = { show: false, message: '', nature: '' };
+  errorMessage: WritableSignal<any> = signal({
+    show: false,
+    message: '',
+    nature: '',
+  });
   gistForm!: FormGroup;
   private editors: ace.Ace.Editor[] = [];
   subscription!: Subscription;
@@ -88,20 +94,20 @@ export class CreateGistPageComponent
       (response) => {
         this.gistForm.get('files')?.setValue([]);
         this.addFile();
-        this.errorMessage = {
+        this.errorMessage.set({
           show: true,
           message: 'Gist created Successfully',
           nature: 'success',
-        };
-        setTimeout(() => (this.errorMessage.show = false), 1000);
+        });
+        setTimeout(() => (this.errorMessage().show = false), 1000);
       },
       (error) => {
-        this.errorMessage = {
+        this.errorMessage.set({
           show: true,
           message: 'Failed to create a gist',
           nature: 'fail',
-        };
-        setTimeout(() => (this.errorMessage.show = false), 1000);
+        });
+        setTimeout(() => (this.errorMessage().show = false), 1000);
       }
     );
   };

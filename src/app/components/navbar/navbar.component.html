@@ -15,20 +15,20 @@
         placeholder="Search"
       />
     </div>
-    <button *ngIf="!user" class="login-button" (click)="signInWithGitHub()">
+    <button *ngIf="!user()" class="login-button" (click)="signInWithGitHub()">
       Login
     </button>
-    <div *ngIf="user" class="avatar-and-menu">
+    <div *ngIf="user()" class="avatar-and-menu">
       <img
         class="user-avatar"
-        [src]="user.image"
+        [src]="user()?.image"
         (click)="toggleShowMenu()"
       />
-      <div class="menu" *ngIf="showMenu">
+      <div class="menu" *ngIf="showMenu()">
         <ul>
           <li>
             Signed in as <br />
-            <strong>{{ user.name }}</strong>
+            <strong>{{ user()?.name }}</strong>
           </li>
           <hr />
           <li routerLink="gists">Your Gists</li>

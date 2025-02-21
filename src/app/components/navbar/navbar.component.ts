@@ -4,6 +4,8 @@ import {
   HostListener,
   OnDestroy,
   OnInit,
+  signal,
+  WritableSignal,
 } from '@angular/core';
 import {
   getAuth,
@@ -25,13 +27,11 @@ import { user } from '../../utils/interfaces';
   templateUrl: './navbar.component.html',
   styleUrl: './navbar.component.scss',
 })
-
-
 export class NavbarComponent implements OnInit, OnDestroy {
-  user: user |null = null;
+  user: WritableSignal<user | null> = signal(null);
   private auth!: any;
-  showMenu: boolean = false;
-  searchedId: string = '';
+  showMenu: WritableSignal<boolean> = signal(false);
+  searchedId: WritableSignal<string> = signal('');
   subscription!: Subscription;
 
   constructor(
@@ -42,22 +42,22 @@ export class NavbarComponent implements OnInit, OnDestroy {
 
   search(event: Event) {
     const val = event.target as HTMLInputElement;
-    this.searchedId = val.value;
-    this.router.navigate([`/gist/${this.searchedId}`]);
+    this.searchedId.set(val.value);
+    this.router.navigate([`/gist/${this.searchedId()}`]);
   }
 
   toggleShowMenu() {
-    this.showMenu = !this.showMenu;
+    this.showMenu.update((val) => !val);
   }
   goToGithubProfile() {
-    window.open(`https://github.com/${this.user?.name}`, '_blank');
+    window.open(`https://github.com/${this.user()?.name}`, '_blank');
   }
   setupUser(user: any) {
-    this.user = {
+    this.user.set({
       name: user.reloadUserInfo.screenName,
       image: user.photoURL,
-    };
-    this.sharedService.user.next(this.user);
+    });
+    this.sharedService.user.next(this.user());
   } //separate as this API provide proper user data
 
   @HostListener('document:click', ['$event'])
@@ -68,7 +68,7 @@ export class NavbarComponent implements OnInit, OnDestroy {
       (!target.closest('.menu') && !target.closest('.user-avatar')) ||
       target.closest('.menu li')
     ) {
-      this.showMenu = false;
+      this.showMenu.set(false);
     }
   }
   ngOnInit(): void {
@@ -91,10 +91,9 @@ export class NavbarComponent implements OnInit, OnDestroy {
   }
 
   signOut() {
-  
-this.router.navigate(['/'])
+    this.router.navigate(['/']);
     signOut(this.auth).then(() => {
-      this.user = null;
+      this.user.set(null);
       console.log('User signed out');
       this.sharedService.user.next(null);
     });

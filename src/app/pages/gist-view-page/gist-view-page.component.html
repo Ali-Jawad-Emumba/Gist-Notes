@@ -1,15 +1,15 @@
-<div *ngIf="gist" class="gist-view">
+<div *ngIf="gist()" class="gist-view">
   <div class="gist-description">
     <div>
-      <img class="avatar" [src]="gist.avatar" alt="" />
+      <img class="avatar" [src]="gist().avatar" alt="" />
       <div>
         <p class="author-and-gist-name">
-          {{ gist.name }} /
-          <strong>{{ gist.gistName }}</strong>
+          {{ gist().name }} /
+          <strong>{{ gist().gistName }}</strong>
         </p>
-        <p class="sub-description">Created {{ gist.created }}</p>
+        <p class="sub-description">Created {{ gist().created }}</p>
         <p class="sub-description">
-          {{ gist.description }}
+          {{ gist().description }}
         </p>
       </div>
     </div>
@@ -71,7 +71,7 @@
   <div class="gist-preview">
     <div class="filename"></div>
     <div class="code">
-      <pre class="line-numbers"><code>{{ gist.json }}</code></pre>
+      <pre class="line-numbers"><code>{{ gist().json }}</code></pre>
     </div>
   </div>
 </div>
