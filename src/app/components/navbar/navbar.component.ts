@@ -36,7 +36,6 @@ export class NavbarComponent implements OnInit, OnDestroy {
 
   constructor(
     private sharedService: SharedService,
-    private httpService: HttpService,
     private router: Router
   ) {}
 

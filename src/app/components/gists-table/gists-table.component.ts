@@ -12,8 +12,7 @@ import { TableColumns } from '../../utils/interfaces';
 import dayjs from 'dayjs';
 import relativeTime from 'dayjs/plugin/relativeTime';
 import { SharedService } from '../../utils/services/shared.service';
-import { firstValueFrom, Subscription } from 'rxjs';
-import { HttpService } from '../../utils/services/http.service';
+import { Subscription } from 'rxjs';
 dayjs.extend(relativeTime);
 
 @Component({
@@ -35,8 +34,7 @@ export class GistsTableComponent implements OnInit, AfterViewInit, OnDestroy {
   userSubscription!: Subscription;
 
   constructor(
-    public sharedService: SharedService,
-    private httpService: HttpService
+    public sharedService: SharedService
   ) {}
 
   @ViewChild(MatPaginator) paginator: MatPaginator | any;
