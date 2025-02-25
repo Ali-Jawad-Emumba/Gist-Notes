@@ -1,5 +1,4 @@
 import {
-  AfterViewInit,
   Component,
   HostListener,
   OnDestroy,
@@ -12,12 +11,10 @@ import {
   GithubAuthProvider,
   signInWithPopup,
   signOut,
-  User,
 } from 'firebase/auth';
 import { initializeApp } from 'firebase/app';
 import { environment } from '../../../environments/environment';
 import { SharedService } from '../../utils/services/shared.service';
-import { HttpService } from '../../utils/services/http.service';
 import { Router } from '@angular/router';
 import { Subscription } from 'rxjs';
 import { user } from '../../utils/interfaces';
@@ -36,7 +33,7 @@ export class NavbarComponent implements OnInit, OnDestroy {
 
   constructor(
     private sharedService: SharedService,
-    private httpService: HttpService,
+  
     private router: Router
   ) {}
 

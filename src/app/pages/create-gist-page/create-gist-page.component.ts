@@ -4,7 +4,6 @@ import {
   OnInit,
   ViewChildren,
   AfterViewInit,
-  contentChild,
   OnDestroy,
   WritableSignal,
   signal,

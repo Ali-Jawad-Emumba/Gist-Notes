@@ -1,13 +1,10 @@
 import {
   Component,
   Input,
-  OnDestroy,
   OnInit,
   signal,
   WritableSignal,
 } from '@angular/core';
-import dayjs from 'dayjs';
-import { HttpService } from '../../utils/services/http.service';
 import { Router } from '@angular/router';
 import { SharedService } from '../../utils/services/shared.service';
 import { PageEvent } from '@angular/material/paginator';
@@ -23,12 +20,11 @@ export class GistCardComponent implements OnInit {
   @Input({ required: true }) cardWidth!: string;
   cards: WritableSignal<card[]> = signal([]);
   loading: WritableSignal<boolean> = signal(false);
-  totalItems: WritableSignal<number> = signal(0); // Total items for pagination (for example)
-  pageSize: number = 6; // Default items per page
-  pagedData: WritableSignal<any[]> = signal([]); // Data to display on the current page
+  totalItems: WritableSignal<number> = signal(0);
+  pageSize: number = 6;
+  pagedData: WritableSignal<any[]> = signal([]);
 
   constructor(
-    private httpService: HttpService,
     public sharedService: SharedService,
     private router: Router
   ) {}
