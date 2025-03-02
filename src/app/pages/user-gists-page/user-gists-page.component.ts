@@ -1,7 +1,6 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { SharedService } from '../../utils/services/shared.service';
-import { User } from 'firebase/auth';
-import { Subscription } from 'rxjs';
+import { Subject, Subscription, takeUntil } from 'rxjs';
 import { HttpService } from '../../utils/services/http.service';
 import { ActivatedRoute, Router } from '@angular/router';
 
@@ -12,10 +11,10 @@ import { ActivatedRoute, Router } from '@angular/router';
 })
 export class UserGistsPageComponent implements OnInit, OnDestroy {
   user!: any;
-  subscriptions: Subscription[] = [];
   gists!: any;
   params!: any;
   gistsHeading!: string;
+  private destroy$ = new Subject<void>();
 
   constructor(
     private sharedService: SharedService,
@@ -23,33 +22,35 @@ export class UserGistsPageComponent implements OnInit, OnDestroy {
     private route: ActivatedRoute
   ) {}
 
-  ngOnInit(): void {
-    const paramsSubscription = this.route.params.subscribe((params: any) => {
-      this.params = params.type;
-      this.gistsHeading =
-        params.type === 'starred' ? 'Starred Gists' : 'All Gists';
-    });
-    const userSubscription = this.sharedService.user.subscribe((user: any) => {
-      this.user = user;
-      const getUserData = () =>
-        this.params && this.params == 'starred'
-          ? this.httpService.getUserStarredGists()
-          : this.httpService.getUserGists(user.name);
-      const gistSubscription = getUserData().subscribe((gists) => {
-        console.log(gists);
-        this.gists = gists;
-      });
+  private getUserData = (user: any) =>
+    this.params && this.params == 'starred'
+      ? this.httpService.getUserStarredGists()
+      : this.httpService.getUserGists(user.name); //uses different API calls incase of starred and all gists pages
 
-      // const userGistsSubscription = this.httpService.getUserGists(this.user).subscribe;
-      this.subscriptions.push(gistSubscription);
-    });
-    this.subscriptions.push(userSubscription, paramsSubscription);
+  ngOnInit(): void {
+    this.route.params
+      .pipe(takeUntil(this.destroy$))
+      .subscribe((params: any) => {
+        this.params = params.type;
+        this.gistsHeading =
+          params.type === 'starred' ? 'Starred Gists' : 'All Gists'; //checks which heading to use
+      });
+    this.sharedService.user$
+      .pipe(takeUntil(this.destroy$))
+      .subscribe((user: any) => {
+        this.user = user;
+
+        this.getUserData(user)
+          .pipe(takeUntil(this.destroy$))
+          .subscribe((gists) => (this.gists = gists));
+      });
   }
   goToGithubProfile() {
     window.open(`https://github.com/${this.user.name}`, '_blank');
   }
 
   ngOnDestroy(): void {
-    this.subscriptions.forEach((subscription) => subscription.unsubscribe());
+    this.destroy$.next();
+    this.destroy$.complete();
   }
 }

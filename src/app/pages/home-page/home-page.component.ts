@@ -1,7 +1,7 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { HttpService } from '../../utils/services/http.service';
 import { GistsTableComponent } from '../../components/gists-table/gists-table.component';
-import { Subscription } from 'rxjs';
+import { firstValueFrom, Subscription } from 'rxjs';
 import { SharedService } from '../../utils/services/shared.service';
 
 @Component({
@@ -11,8 +11,6 @@ import { SharedService } from '../../utils/services/shared.service';
 })
 export class HomePageComponent implements OnInit, OnDestroy {
   viewType: string = 'list';
-  currentView: any = GistsTableComponent;
-  dynamicInputs!: any;
   loading: boolean = true;
   subscription!: Subscription;
   publicGists!: any;
@@ -23,15 +21,14 @@ export class HomePageComponent implements OnInit, OnDestroy {
   ) {}
 
   selectView = (view: string) => {
-    this.sharedService.selectedGistView.next(view);
+    this.sharedService.selectedGistView$.next(view);
   };
 
   async ngOnInit(): Promise<void> {
-    const publicGist = await this.httpService.getPublicGists().toPromise();
-
+    const publicGist = await firstValueFrom(this.httpService.getPublicGists());
     this.publicGists = publicGist;
 
-    this.subscription = this.sharedService.selectedGistView.subscribe(
+    this.subscription = this.sharedService.selectedGistView$.subscribe(
       (val: string) => (this.viewType = val)
     );
   }

@@ -18,7 +18,7 @@ import { SharedService } from '../../utils/services/shared.service';
 import { HttpService } from '../../utils/services/http.service';
 import { Router } from '@angular/router';
 import { Subscription } from 'rxjs';
-import { user } from '../../utils/interfaces';
+import { UserData } from '../../utils/interfaces';
 
 @Component({
   selector: 'app-navbar',
@@ -28,10 +28,10 @@ import { user } from '../../utils/interfaces';
 
 
 export class NavbarComponent implements OnInit, OnDestroy {
-  user: user |null = null;
+  user: UserData |null = null;
   private auth!: any;
   showMenu: boolean = false;
-  searchedId: string = '';
+  searchedId: string = ''; //for the search bar
   subscription!: Subscription;
 
   constructor(
@@ -56,8 +56,8 @@ export class NavbarComponent implements OnInit, OnDestroy {
       name: user.reloadUserInfo.screenName,
       image: user.photoURL,
     };
-    this.sharedService.user.next(this.user);
-  } //separate as this API provide proper user data
+    this.sharedService.user$.next(this.user);
+  }
 
   @HostListener('document:click', ['$event'])
   onClickOutside(event: Event) {
@@ -95,7 +95,7 @@ this.router.navigate(['/'])
     signOut(this.auth).then(() => {
       this.user = null;
       console.log('User signed out');
-      this.sharedService.user.next(null);
+      this.sharedService.user$.next(null);
     });
   }
 

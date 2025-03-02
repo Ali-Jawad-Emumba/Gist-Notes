@@ -1,17 +1,17 @@
 export interface TableColumns {
-  name: nameTableColumn;
+  name: NameTableColumn;
   notebookName: string;
   keyword: string;
   updated: string;
   isStarred: Boolean;
 }
 
-export interface nameTableColumn {
+export interface NameTableColumn {
   avatar: string;
   name: string;
 }
 
-export interface card {
+export interface Card {
   json: any;
   avatar: string;
   name: string;
@@ -22,7 +22,7 @@ export interface card {
   forksURL: string;
 }
 
-export interface user {
+export interface UserData {
   name: string;
   image: string;
 }

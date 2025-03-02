@@ -35,14 +35,16 @@ export class CreateGistPageComponent
 
   @ViewChildren('editor') private editorElements!: ElementRef[]; // Reference to the DOM element
 
+  private doAceImports = async () => {
+    await import('ace-builds/src-noconflict/ace');
+    await import('ace-builds/src-noconflict/ext-language_tools');
+    await import('ace-builds/src-noconflict/mode-javascript');
+    await import('ace-builds/src-noconflict/theme-chrome');
+  };
+
   ngOnInit(): void {
-    const doImports = async () => {
-      await import('ace-builds/src-noconflict/ace');
-      await import('ace-builds/src-noconflict/ext-language_tools');
-      await import('ace-builds/src-noconflict/mode-javascript');
-      await import('ace-builds/src-noconflict/theme-chrome');
-    };
-    doImports();
+    
+    this.doAceImports();
     this.gistForm = this.fb.group({
       description: ['', Validators.required],
       files: this.fb.array([this.createNewFile()]),
@@ -74,7 +76,6 @@ export class CreateGistPageComponent
   };
 
   onSubmit = () => {
-    console.log(this.gistForm.value);
     const gist = this.gistForm.value;
     const files = gist.files.reduce((acc: any, file: any) => {
       acc[file.filename] = {

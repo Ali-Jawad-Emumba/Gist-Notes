@@ -1,6 +1,6 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { SharedService } from '../../utils/services/shared.service';
-import { Subscription } from 'rxjs';
+import { firstValueFrom, Subject, Subscription, takeUntil } from 'rxjs';
 import { HttpService } from '../../utils/services/http.service';
 import { ActivatedRoute, Route } from '@angular/router';
 
@@ -10,9 +10,10 @@ import { ActivatedRoute, Route } from '@angular/router';
   styleUrl: './gist-view-page.component.scss',
 })
 export class GistViewPageComponent implements OnInit, OnDestroy {
+  //this page routes when user opens an individual gist
   gist!: any;
-  subcriptions: Subscription[] = [];
   openedGistId!: string;
+  private destroy$ = new Subject<void>();
 
   constructor(
     private sharedService: SharedService,
@@ -21,32 +22,35 @@ export class GistViewPageComponent implements OnInit, OnDestroy {
   ) {}
 
   ngOnInit(): void {
-    const paramSubscription = this.route.params.subscribe(async (param) => {
-      const openedGistId = param['id'];
-      const gist = await this.httpService
-        .getAGist(openedGistId)
-        .toPromise();
-      this.gist = await this.sharedService.fetchCardDetail(gist);
-    });
-    this.subcriptions.push(paramSubscription);
+    this.route.params
+      .pipe(takeUntil(this.destroy$))
+      .subscribe(async (param) => {
+        //get gist id from params and fetch it all detauls for view
+        const openedGistId = param['id'];
+        const gist = await firstValueFrom(
+          this.httpService.getAGist(openedGistId)
+        ); //fetches raw gist
+        this.gist = await this.sharedService.fetchCardDetail(gist); //fetches code preview and transfrom raw data
+      });
   }
 
   forkGist() {
-    const forkGistSubscription = this.httpService
+    this.httpService
       .forkGist(this.gist.gistId)
+      .pipe(takeUntil(this.destroy$))
       .subscribe(() => console.log('Gist Forked'));
-    this.subcriptions.push(forkGistSubscription);
   }
 
   starGist() {
     const body = { gistId: this.gist.gistId };
-    const starGistSubscription = this.httpService
+    this.httpService
       .starGist(body)
+      .pipe(takeUntil(this.destroy$))
       .subscribe(() => console.log('Gist Starred'));
-    this.subcriptions.push(starGistSubscription);
   }
 
   ngOnDestroy(): void {
-    this.subcriptions.forEach((subcription) => subcription.unsubscribe());
+    this.destroy$.next();
+    this.destroy$.complete();
   }
 }

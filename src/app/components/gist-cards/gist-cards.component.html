@@ -12,12 +12,12 @@
       <img class="avatar" [src]="card.avatar" alt="" />
       <div>
         <p class="author-and-gist-name">
-          {{ card.name | truncate : 16 }} /
-          <strong>{{ card.gistName | truncate : 16 }}</strong>
+          {{ truncate(card.name, 16) }} /
+          <strong>{{ truncate(card.gistName, 16) }}</strong>
         </p>
         <p class="sub-description">Created {{ card.created }}</p>
         <p class="sub-description">
-          {{ card.description | truncate : 40 }}
+          {{ truncate(card.description, 40) }}
         </p>
       </div>
     </div>
@@ -31,7 +31,6 @@
   >
   </mat-paginator>
 </div>
-<div *ngIf="!cards">No Data Avaliable</div>
 
 <div class="loader" *ngIf="loading"></div>
 <!-- <div class="next-previous">
