@@ -28,22 +28,34 @@ export class CreateGistPageComponent
   implements OnInit, AfterViewInit, OnDestroy
 {
   constructor(private fb: FormBuilder, private httpService: HttpService) {}
-  errorMessage = { show: false, message: '', nature: '' };
+  message = { show: false, content: '', nature: '' };
   gistForm!: FormGroup;
   private editors: ace.Ace.Editor[] = [];
   subscription!: Subscription;
 
   @ViewChildren('editor') private editorElements!: ElementRef[]; // Reference to the DOM element
 
+  private showMessage = (message: string, nature: string) => {
+    this.message = {
+      show: true,
+      content: message,
+      nature,
+    };
+    setTimeout(() => (this.message.show = false), 3000);
+  };
   private doAceImports = async () => {
-    await import('ace-builds/src-noconflict/ace');
-    await import('ace-builds/src-noconflict/ext-language_tools');
-    await import('ace-builds/src-noconflict/mode-javascript');
-    await import('ace-builds/src-noconflict/theme-chrome');
+    try {
+      await import('ace-builds/src-noconflict/ace');
+      await import('ace-builds/src-noconflict/ext-language_tools');
+      await import('ace-builds/src-noconflict/mode-javascript');
+      await import('ace-builds/src-noconflict/theme-chrome');
+    } catch (error) {
+      console.error('Error loading Ace Editor modules:', error);
+      this.showMessage('Failed to load Ace Editor modules', 'error');
+    }
   };
 
   ngOnInit(): void {
-    
     this.doAceImports();
     this.gistForm = this.fb.group({
       description: ['', Validators.required],
@@ -89,21 +101,9 @@ export class CreateGistPageComponent
       (response) => {
         this.gistForm.get('files')?.setValue([]);
         this.addFile();
-        this.errorMessage = {
-          show: true,
-          message: 'Gist created Successfully',
-          nature: 'success',
-        };
-        setTimeout(() => (this.errorMessage.show = false), 1000);
+        this.showMessage('Gist created Successfully', 'success');
       },
-      (error) => {
-        this.errorMessage = {
-          show: true,
-          message: 'Failed to create a gist',
-          nature: 'fail',
-        };
-        setTimeout(() => (this.errorMessage.show = false), 1000);
-      }
+      (error) => this.showMessage('Failed to create a gist', 'error')
     );
   };
 

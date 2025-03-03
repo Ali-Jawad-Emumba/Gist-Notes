@@ -37,12 +37,12 @@
       </div>
       <p
         class="error"
-        *ngIf="errorMessage.show"
+        *ngIf="message.show"
         [ngStyle]="{
-          color: errorMessage.nature === 'succuess' ? 'green' : 'red'
+          color: message.nature === 'success' ? 'green' : 'red'
         }"
       >
-        {{ errorMessage.message }}
+        {{ message.content }}
       </p>
     </form>
   </div>
