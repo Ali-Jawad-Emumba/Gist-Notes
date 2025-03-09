@@ -13,8 +13,9 @@ export class SharedService {
   selectedGistView$: any = new BehaviorSubject<string>('list');
 
   constructor(private httpService: HttpService) {}
+
   fetchCardDetail = async (gist: any) => {
-    //fetches card code preview and mreturn a card tarnsformed
+    //fetches card code preview and return a card transformed
     let jsonData: any = null;
     let gistName = Object.keys(gist.files)[0];
     const url = gist.files[gistName].raw_url;

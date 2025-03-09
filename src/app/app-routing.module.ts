@@ -15,6 +15,7 @@ const routes: Routes = [
   },
   { path: 'gists', component: UserGistsPageComponent, pathMatch: 'full' },
   { path: 'gists/:type', component: UserGistsPageComponent, pathMatch: 'full' },
+  { path: '**', redirectTo: '' },
 ];
 
 @NgModule({

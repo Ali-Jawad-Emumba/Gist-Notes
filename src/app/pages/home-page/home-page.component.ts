@@ -20,10 +20,6 @@ export class HomePageComponent implements OnInit, OnDestroy {
     private sharedService: SharedService
   ) {}
 
-  selectView = (view: string) => {
-    this.sharedService.selectedGistView$.next(view);
-  };
-
   async ngOnInit(): Promise<void> {
     const publicGist = await firstValueFrom(this.httpService.getPublicGists());
     this.publicGists = publicGist;
@@ -32,6 +28,10 @@ export class HomePageComponent implements OnInit, OnDestroy {
       (val: string) => (this.viewType = val)
     );
   }
+
+  selectView = (view: string) => {
+    this.sharedService.selectedGistView$.next(view);
+  };
 
   ngOnDestroy(): void {
     this.subscription.unsubscribe();

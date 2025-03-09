@@ -20,7 +20,7 @@ dayjs.extend(relativeTime);
   templateUrl: './gists-table.component.html',
   styleUrl: './gists-table.component.scss',
 })
-export class GistsTableComponent implements OnInit, AfterViewInit, OnDestroy {
+export class GistsTableComponent implements OnInit, OnDestroy {
   tableData: TableColumns[] = [];
   @Input({ required: true }) publicGists!: any[];
   displayedColumns: string[] = [
@@ -56,10 +56,6 @@ export class GistsTableComponent implements OnInit, AfterViewInit, OnDestroy {
     this.setupDataSource(); //update the table in UI
   }
 
-  ngAfterViewInit() {
-    this.setupDataSource();
-  }
-
   setupDataSource() {
     //update the table in UI
     this.dataSource = new MatTableDataSource<TableColumns>(this.tableData);
@@ -70,9 +66,6 @@ export class GistsTableComponent implements OnInit, AfterViewInit, OnDestroy {
     paginatorIntl.nextPageLabel = '';
     paginatorIntl.previousPageLabel = '';
   }
-
-  truncate = (text: string, limit: number) =>
-    text.length > limit ? text.substring(0, limit) + '...' : text;
   
   ngOnDestroy(): void {
     this.userSubscription.unsubscribe();

@@ -5,7 +5,7 @@ export const httpInterceptor: HttpInterceptorFn = (req, next) => {
   const token = environment.githubToken;
   let interceptedReq = req;
   if (req.headers.has('skipAuth')) {
-    interceptedReq = req.clone({ headers: req.headers.delete('skipAuth') });
+    interceptedReq = req.clone({ headers: req.headers.delete('skipAuth') }); //skipAuth is a custom header to skip authorization
   } else {
     if (token) {
       interceptedReq = req.clone({

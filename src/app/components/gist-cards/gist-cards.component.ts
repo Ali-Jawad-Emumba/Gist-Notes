@@ -45,14 +45,15 @@ export class GistCardsComponent implements OnInit {
 
   async loadCards() {
     this.loading = true;
-    const promises = this.pagedData.map(
-      async (e: any) => await this.sharedService.fetchCardDetail(e)
-    );
-    const cardsData = await Promise.all(promises);
-    this.loading = false;
-    this.cards = cardsData;
+    try {
+      const cardsData = await Promise.all(
+        this.pagedData.map((e) => this.sharedService.fetchCardDetail(e))
+      );
+      this.cards = cardsData;
+    } catch (error) {
+      console.error('Error loading cards:', error);
+    } finally {
+      this.loading = false;
+    }
   }
-
-  truncate = (text: string, limit: number) =>
-    text.length > limit ? text.substring(0, limit) + '...' : text;
 }

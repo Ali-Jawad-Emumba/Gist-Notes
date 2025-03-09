@@ -22,11 +22,6 @@ export class UserGistsPageComponent implements OnInit, OnDestroy {
     private route: ActivatedRoute
   ) {}
 
-  private getUserData = (user: any) =>
-    this.params && this.params == 'starred'
-      ? this.httpService.getUserStarredGists()
-      : this.httpService.getUserGists(user.name); //uses different API calls incase of starred and all gists pages
-
   ngOnInit(): void {
     this.route.params
       .pipe(takeUntil(this.destroy$))
@@ -39,12 +34,17 @@ export class UserGistsPageComponent implements OnInit, OnDestroy {
       .pipe(takeUntil(this.destroy$))
       .subscribe((user: any) => {
         this.user = user;
-
         this.getUserData(user)
           .pipe(takeUntil(this.destroy$))
           .subscribe((gists) => (this.gists = gists));
       });
   }
+
+  private getUserData = (user: any) =>
+    this.params && this.params == 'starred'
+      ? this.httpService.getUserStarredGists()
+      : this.httpService.getUserGists(user.name); //uses different API calls incase of starred and all gists pages
+
   goToGithubProfile() {
     window.open(`https://github.com/${this.user.name}`, '_blank');
   }

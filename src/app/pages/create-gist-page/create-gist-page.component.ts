@@ -34,27 +34,7 @@ export class CreateGistPageComponent
   subscription!: Subscription;
 
   @ViewChildren('editor') private editorElements!: ElementRef[]; // Reference to the DOM element
-
-  private showMessage = (message: string, nature: string) => {
-    this.message = {
-      show: true,
-      content: message,
-      nature,
-    };
-    setTimeout(() => (this.message.show = false), 3000);
-  };
-  private doAceImports = async () => {
-    try {
-      await import('ace-builds/src-noconflict/ace');
-      await import('ace-builds/src-noconflict/ext-language_tools');
-      await import('ace-builds/src-noconflict/mode-javascript');
-      await import('ace-builds/src-noconflict/theme-chrome');
-    } catch (error) {
-      console.error('Error loading Ace Editor modules:', error);
-      this.showMessage('Failed to load Ace Editor modules', 'error');
-    }
-  };
-
+  
   ngOnInit(): void {
     this.doAceImports();
     this.gistForm = this.fb.group({
@@ -66,6 +46,27 @@ export class CreateGistPageComponent
   ngAfterViewInit(): void {
     this.initializeEditors(); // Initialize editors after the view is rendered
   }
+
+  private showMessage = (message: string, nature: string) => {
+    this.message = {
+      show: true,
+      content: message,
+      nature,
+    };
+    setTimeout(() => (this.message.show = false), 3000);
+  };
+  
+  private doAceImports = async () => {
+    try {
+      await import('ace-builds/src-noconflict/ace');
+      await import('ace-builds/src-noconflict/ext-language_tools');
+      await import('ace-builds/src-noconflict/mode-javascript');
+      await import('ace-builds/src-noconflict/theme-chrome');
+    } catch (error) {
+      console.error('Error loading Ace Editor modules:', error);
+      this.showMessage('Failed to load Ace Editor modules', 'error');
+    }
+  };
 
   get files(): FormArray {
     return this.gistForm.get('files') as FormArray;
