@@ -20,7 +20,7 @@ dayjs.extend(relativeTime);
   templateUrl: './gists-table.component.html',
   styleUrl: './gists-table.component.scss',
 })
-export class GistsTableComponent implements OnInit, OnDestroy {
+export class GistsTableComponent implements OnInit, AfterViewInit, OnDestroy {
   tableData: TableColumns[] = [];
   @Input({ required: true }) publicGists!: any[];
   displayedColumns: string[] = [
@@ -41,6 +41,10 @@ export class GistsTableComponent implements OnInit, OnDestroy {
     this.userSubscription = this.sharedService.user$.subscribe((val: any) =>
       this.setTableData(val)
     );
+  }
+
+  ngAfterViewInit() {
+    this.setupDataSource(); //initializes the paginator after view is initialized
   }
 
   setTableData(user: any) {
@@ -66,7 +70,7 @@ export class GistsTableComponent implements OnInit, OnDestroy {
     paginatorIntl.nextPageLabel = '';
     paginatorIntl.previousPageLabel = '';
   }
-  
+
   ngOnDestroy(): void {
     this.userSubscription.unsubscribe();
   }

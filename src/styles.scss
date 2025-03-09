@@ -61,6 +61,12 @@ body {
   }
 }
 
+.paginator {
+  .mat-mdc-paginator-page-size {
+    display: none !important;
+  }
+}
+
 .gist-description {
   @include grid(30px 1fr, 1fr, 15px);
   padding: 8px;
